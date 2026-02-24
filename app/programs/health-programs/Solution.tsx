@@ -29,7 +29,31 @@ const programs = [
         approach: "Low-sodium, heart-friendly nutrition planning to support healthy blood pressure levels. Guided cardio routines designed to strengthen cardiovascular endurance safely. Breathing techniques to improve oxygen efficiency and relaxation. Stress-management practices that protect heart health and promote long-term balance.",
         benefits: "Improved blood pressure control, better heart health, reduced stress levels, and sustainable lifestyle improvements.",
         image: "/Health3.jpg"
-    }
+    },
+    {
+        id: "beginners",
+        title: "Beginners & Intermediate",
+        description: "Starting with proper guidance ensures correct technique and body alignment. It reduces the risk of injury and unnecessary strain. A strong foundation builds confidence and consistency. This approach supports safe, sustainable long-term practice.",
+        approach: "Step-by-step asana progression designed to match your current fitness level. Guided pranayama techniques to improve breathing control and mental clarity. Gradual flexibility development to enhance mobility safely. Structured practice that builds strength, balance, and long-term confidence.",
+        benefits: "Improved flexibility, better posture, enhanced breathing capacity, and increased body awareness.",
+        image: "/Health4.jpg"
+    },
+    {
+        id: "special-guide",
+        title: "Special Guide",
+        description: "Specific goals such as stress relief or weight management require targeted strategies. Hormonal balance demands structured nutrition and mindful lifestyle support. Back pain improvement depends on corrective exercises and mobility work. Focused practice ensures safe, measurable, and sustainable results.",
+        approach: "Customized yoga sequences tailored to individual health conditions. Designed to align with your lifestyle, schedule, and fitness level. Focused on addressing specific goals safely and effectively. Promoting balance, flexibility, strength, and long-term well-being.",
+        benefits: "Targeted relief, improved balance, better energy flow, and sustainable mind-body harmony.",
+        image: "/Health5.jpg"
+    },
+    {
+        id: "healing-exercises",
+        title: "Healing, Exercises & Regular Practices",
+        description: "Consistency in mindful movement enhances physical and immune resilience. Regular meditation supports mental clarity and emotional balance. Together, they reduce stress and improve overall well-being. Sustained practice builds long-term stability, focus, and inner strength.",
+        approach: "A balanced combination of therapeutic yoga to support physical healing and mobility. Guided meditation sessions to enhance mental clarity and emotional balance. Relaxation techniques that reduce stress and nervous system overload. Structured daily practice plans to build consistency and long-term well-being.",
+        benefits: "Reduced stress, improved focus, balanced emotions, stronger immunity, and long-term inner wellness.",
+        image: "/Health6.jpg"
+    },
 ];
 
 export default function Solutions() {
@@ -47,10 +71,10 @@ export default function Solutions() {
                 {/* Section Header */}
                 <div className="text-center mb-12 md:mb-20">
                     <h2 className="text-3xl md:text-5xl font-bold mb-4 text-[#0F172A]">
-                        Complete Diet & Nutrition Solutions
+                        Personalized Care Programs for Specific Health Needs
                     </h2>
                     <p className="max-w-3xl mx-auto text-gray-500 text-base md:text-lg">
-                        Simple, safe, and sustainable nutrition plans tailored to your specific lifestyle, health conditions, and fitness goals.
+                        Customized workout and diet strategies built around individual health conditions and recovery goals. Designed to help you improve strength, balance, and well-being safely.
                     </p>
                 </div>
 
@@ -103,7 +127,7 @@ export default function Solutions() {
                                 <div className="pt-2">
                                     <button
                                         onClick={() => handleStartNow(program.title)}
-                                        className="bg-[#023051] text-white px-6 py-2 rounded-full font-bold hover:bg-[#023051]/90 transition-all shadow-lg text-xs md:text-sm"
+                                        className="bg-[#023051] cursor-pointer text-white px-6 py-2 rounded-full font-bold hover:bg-[#023051]/90 transition-all shadow-lg text-xs md:text-sm"
                                     >
                                         Start Now
                                     </button>

@@ -47,10 +47,10 @@ export default function Solutions() {
                 {/* Section Header */}
                 <div className="text-center mb-12 md:mb-20">
                     <h2 className="text-3xl md:text-5xl font-bold mb-4 text-[#0F172A]">
-                        Complete Diet & Nutrition Solutions
+                        Empowering Women Through Smart Health & Nutrition
                     </h2>
                     <p className="max-w-3xl mx-auto text-gray-500 text-base md:text-lg">
-                        Simple, safe, and sustainable nutrition plans tailored to your specific lifestyle, health conditions, and fitness goals.
+                        Specialized workout and diet plans tailored to women’s unique body needs and life stages. Support your wellness with balanced nutrition, hormonal care, and sustainable fitness routines.
                     </p>
                 </div>
 
@@ -103,7 +103,7 @@ export default function Solutions() {
                                 <div className="pt-2">
                                     <button
                                         onClick={() => handleStartNow(program.title)}
-                                        className="bg-[#023051] text-white px-6 py-2 rounded-full font-bold hover:bg-[#023051]/90 transition-all shadow-lg text-xs md:text-sm"
+                                        className="bg-[#023051] cursor-pointer text-white px-6 py-2 rounded-full font-bold hover:bg-[#023051]/90 transition-all shadow-lg text-xs md:text-sm"
                                     >
                                         Start Now
                                     </button>

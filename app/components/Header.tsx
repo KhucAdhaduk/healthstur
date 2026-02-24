@@ -81,6 +81,9 @@ const programsData = [
             { name: 'Thyroid Disorders', href: '/programs/health-programs#thyroid-disorders' },
             { name: 'Joint Pain Relief & Mobility', href: '/programs/health-programs#joint-pain' },
             { name: 'Hypertension Therapy', href: '/programs/health-programs#hypertension-therapy' },
+            { name: 'Beginners & Intermediate', href: '/programs/health-programs#beginners' },
+            { name: 'Special Guide', href: '/programs/health-programs#special-guide' },
+            { name: 'Healing, Exercises & Regular Practices', href: '/programs/health-programs#healing-exercises' },
         ]
     },
     {

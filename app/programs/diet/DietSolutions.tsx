@@ -151,7 +151,7 @@ export default function DietSolutions() {
                                 <div className="pt-2">
                                     <button
                                         onClick={() => handleStartNow(program.title)}
-                                        className="bg-[#023051] text-white px-6 py-2 rounded-full font-bold hover:bg-[#023051]/90 transition-all shadow-lg text-xs md:text-sm"
+                                        className="bg-[#023051] cursor-pointer text-white px-6 py-2 rounded-full font-bold hover:bg-[#023051]/90 transition-all shadow-lg text-xs md:text-sm"
                                     >
                                         Start Now
                                     </button>

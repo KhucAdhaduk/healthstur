@@ -1,14 +1,17 @@
 'use client';
 
+import { useState } from 'react';
 import { ArrowRight } from 'lucide-react';
-
 import { motion } from 'framer-motion';
+import FeedbackDialog from './FeedbackDialog';
 
 // ... (imports remain)
 
 export default function FeedbackSection() {
+    const [isFeedbackOpen, setIsFeedbackOpen] = useState(false);
+
     return (
-        <section className="pb-12 md:pb-24 bg-white">
+        <section className="pb-12 md:pb-24 bg-white relative">
             <motion.div
                 initial={{ opacity: 0, scale: 0.95 }}
                 whileInView={{ opacity: 1, scale: 1 }}
@@ -27,11 +30,19 @@ export default function FeedbackSection() {
                 </p>
 
                 {/* CTA Button */}
-                <button className="inline-flex items-center gap-2 bg-[#00284D] text-white px-8 py-3.5 rounded-xl font-bold text-sm md:text-base hover:bg-[#00355E] transition-colors duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5">
+                <button
+                    onClick={() => setIsFeedbackOpen(true)}
+                    className="inline-flex cursor-pointer items-center gap-2 bg-[#00284D] text-white px-8 py-3 rounded-xl font-bold text-sm md:text-base hover:bg-[#00355E] transition-colors duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
+                >
                     Give Feedback
                     <ArrowRight className="w-5 h-5" strokeWidth={2.5} />
                 </button>
             </motion.div>
+
+            <FeedbackDialog
+                isOpen={isFeedbackOpen}
+                onClose={() => setIsFeedbackOpen(false)}
+            />
         </section>
     );
 }

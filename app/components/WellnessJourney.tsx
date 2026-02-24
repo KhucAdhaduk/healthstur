@@ -1,31 +1,35 @@
 'use client';
 
-import { ClipboardList, FileText, Activity, TrendingUp, ChevronRight } from 'lucide-react';
+import { Activity, ChevronRight, ClipboardList, FileText, TrendingUp } from 'lucide-react';
 
 const steps = [
     {
         id: "01",
         title: "Your Details",
         description: "Share your biometrics, dietary preferences, and fitness goals in our comprehensive quiz.",
-        icon: ClipboardList
+        icon: ClipboardList,
+        color: '#D0B030'
     },
     {
         id: "02",
         title: "Get Custom Plan",
         description: "Our AI analyzes 50+ data points to generate your personalized nutrition and training roadmap.",
-        icon: FileText
+        icon: FileText,
+        color: '#06A76C'
     },
     {
         id: "03",
         title: "Follow Diet & Workout",
         description: "Execute your daily tasks with meal prep instructions, and real-time support.",
-        icon: Activity
+        icon: Activity,
+        color: '#B779E6'
     },
     {
         id: "04",
         title: "Track Progress",
         description: "Log your achievements and watch your body transform with detailed analytics and insights.",
-        icon: TrendingUp
+        icon: TrendingUp,
+        color: '#E30000'
     }
 ];
 
@@ -83,7 +87,7 @@ export default function WellnessJourney() {
                                 <div className="relative flex flex-col items-center mb-15">
                                     {/* Icon Box */}
                                     <div className="w-18 h-18 md:w-[86px] md:h-[86px] rounded-3xl bg-[#03375f] flex items-center justify-center shadow-lg group-hover:scale-105 transition-transform duration-300 z-10 border border-white/5">
-                                        <step.icon className="w-8 h-8 md:w-9 md:h-9 text-white" strokeWidth={1.5} />
+                                        <step.icon className="w-8 h-8 md:w-9 md:h-9" style={{ color: step.color }} strokeWidth={1.5} />
                                     </div>
 
                                     {/* Step Pill - Absolutely positioned to overlap bottom half */}

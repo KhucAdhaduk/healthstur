@@ -263,7 +263,7 @@ export default function PricingSection() {
                             <button
                                 key={d}
                                 onClick={() => setDuration(d)}
-                                className={`relative z-10 px-6 py-3 rounded-full text-base font-bold transition-colors duration-300 ${duration === d ? 'text-white' : 'text-[#023051] hover:text-[#023051]/80'
+                                className={`relative z-10 px-6 py-3 rounded-full cursor-pointer text-base font-bold transition-colors duration-300 ${duration === d ? 'text-white' : 'text-[#023051] hover:text-[#023051]/80'
                                     }`}
                             >
                                 {d}

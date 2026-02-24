@@ -71,18 +71,21 @@ export default function ConsultationDialog({ isOpen, onClose }: ConsultationDial
                             onClick={(e) => e.stopPropagation()}
                             className="bg-[#F5F7FA] w-full max-w-2xl rounded-2xl shadow-2xl p-6 md:p-8 relative"
                         >
-                            {/* Close Button */}
-                            <button
-                                onClick={onClose}
-                                className="absolute top-4 right-4 text-gray-400 hover:text-gray-600 transition-colors"
-                            >
-                                <X className="w-6 h-6" />
-                            </button>
 
-                            {/* Header */}
-                            <h2 className="text-3xl md:text-3xl font-extrabold text-[#023051] mb-8">
-                                Bring Your Vision to Life
-                            </h2>
+                            <div className="flex justify-between items-center mb-6">
+                                {/* Header */}
+                                <h2 className="text-2xl md:text-3xl font-bold text-black">
+                                    Bring Your Vision to Life
+                                </h2>
+
+                                {/* Close Button */}
+                                <button
+                                    onClick={onClose}
+                                    className="text-gray-400 cursor-pointer hover:text-gray-600 transition-colors"
+                                >
+                                    <X className="w-6 h-6" />
+                                </button>
+                            </div>
 
                             {/* Form */}
                             <form onSubmit={handleSubmit} className="space-y-6">
@@ -157,7 +160,7 @@ export default function ConsultationDialog({ isOpen, onClose }: ConsultationDial
                                 <div>
                                     <button
                                         type="submit"
-                                        className="bg-[#0b1c2c] text-white font-bold py-3 px-8 rounded-lg hover:bg-[#023051] transition-colors shadow-lg"
+                                        className="bg-[#0b1c2c] cursor-pointer text-white font-bold py-3 px-8 rounded-lg hover:bg-[#023051] transition-colors shadow-lg"
                                     >
                                         Send Message
                                     </button>

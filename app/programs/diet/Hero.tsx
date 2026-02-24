@@ -16,7 +16,7 @@ export default function Hero() {
                     priority
                 />
                 {/* Dark Overlay */}
-                <div className="absolute inset-0 bg-black/60" />
+                <div className="absolute inset-0 bg-[#023051]/30" />
             </div>
 
             {/* Content */}

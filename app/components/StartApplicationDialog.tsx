@@ -72,7 +72,7 @@ export default function StartApplicationDialog({ isOpen, onClose, selectedProgra
                         {/* Header */}
                         <div className="px-8 pt-6 flex items-center justify-between bg-white z-10">
                             <h2 className="text-2xl md:text-3xl font-bold text-center w-full text-black">Start Your Application</h2>
-                            <button onClick={onClose} className="absolute right-6 top-6 p-2 rounded-full hover:bg-gray-100 transition-colors">
+                            <button onClick={onClose} className="absolute right-6 cursor-pointer top-6 p-2 rounded-full hover:bg-gray-100 transition-colors">
                                 <X className="w-6 h-6 text-gray-500" />
                             </button>
                         </div>
@@ -214,7 +214,7 @@ export default function StartApplicationDialog({ isOpen, onClose, selectedProgra
                                 <div className="flex justify-center pt-2">
                                     <button
                                         type="submit"
-                                        className="bg-[#0F172A] text-white font-medium py-3 px-12 rounded-full hover:bg-[#023051] transition-colors shadow-lg w-full md:w-auto"
+                                        className="bg-[#0F172A] cursor-pointer text-white font-medium py-3 px-12 rounded-full hover:bg-[#023051] transition-colors shadow-lg w-full md:w-auto"
                                     >
                                         Submit
                                     </button>

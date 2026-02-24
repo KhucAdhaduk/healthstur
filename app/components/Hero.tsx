@@ -10,15 +10,15 @@ const SLIDES = [
     {
         id: 1,
         heading: "Nutrition & Diet",
-        subtext: "Personalized diet plans and smart nutrition strategies to support your fitness and health goals with balanced, sustainable eating.",
-        bullets: ["Weight Loss Diet", "Muscle Gain Diet", "Healthy Snacking", "Diabetes Friendly"],
+        subtext: "Nutrition is the foundation of physical strength, mental clarity, and long-term health. The right balance of macronutrients and micronutrients fuels performance and prevents lifestyle diseases.",
+        bullets: ["Sustainable weight management", "Improved digestion & metabolism", "Higher energy levels", "Stronger immunity"],
         background: "/Hero_Bg1.svg"
     },
     {
         id: 2,
         heading: "Age-Group Specific",
-        subtext: "Gym and diet plans tailored to each age group, ensuring safe workouts and proper nutrition based on body needs and lifestyle stages.",
-        bullets: ["Childern’s (Ages 5-12)", "Teenagers (Ages 13-19)", "Young Adults (Ages 20-30)", "Adults (Ages 31-45)"],
+        subtext: "Different life stages require different nutrition and fitness approaches from growth and development to muscle maintenance and mobility support.",
+        bullets: ["Supports healthy growth in youth", "Maintains muscle & bone density in adults", "Enhances mobility & vitality in seniors"],
         background: "/Hero_Bg2.svg"
     },
     {
@@ -32,7 +32,7 @@ const SLIDES = [
         id: 4,
         heading: "Corporate Wellness",
         subtext: "Employee health directly impacts productivity, morale, and long-term organizational success.",
-        bullets: ["Reduced absenteeism", "Increased focus & productivity", "Better team morale", "Lower healthcare costs", "Improved employee retention"],
+        bullets: ["Reduced absenteeism", "Increased focus & productivity", "Better team morale", "Lower healthcare costs"],
         background: "/Hero_Bg4.svg"
     },
     {

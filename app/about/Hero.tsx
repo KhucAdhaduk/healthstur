@@ -9,14 +9,14 @@ export default function Hero() {
             {/* Background Image */}
             <div className="absolute inset-0 z-0">
                 <Image
-                    src="/About_bg.png"
+                    src="/About_bg.jpg"
                     alt="About Background"
                     fill
                     className="object-cover scale-105"
                     priority
                 />
                 {/* Dark Overlay */}
-                <div className="absolute inset-0 bg-black/50" />
+                <div className="absolute inset-0 bg-[#023051]/60" />
             </div>
 
             {/* Content */}

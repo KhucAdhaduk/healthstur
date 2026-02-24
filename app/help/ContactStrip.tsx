@@ -7,22 +7,26 @@ const contactDetails = [
     {
         icon: Phone,
         title: "Call Us",
-        text: "+91 99981 17873"
+        text: "+91 99981 17873",
+        color: "#69C2E3"
     },
     {
         icon: Mail,
         title: "Email",
-        text: "care.healthstur@gmail.com"
+        text: "care.healthstur@gmail.com",
+        color: "#06A76C"
     },
     {
         icon: Clock,
         title: "Working Hours",
-        text: "MON-SAT: 9:30 AM - 6:30 PM"
+        text: "MON-SAT: 9:30 AM - 6:30 PM",
+        color: "#B779E6"
     },
     {
         icon: MapPin,
         title: "Address",
-        text: "Ahmedabad"
+        text: "Ahmedabad",
+        color: "#E49A34"
     }
 ];
 
@@ -41,7 +45,7 @@ export default function ContactStrip() {
                             className="flex flex-col items-center text-center group"
                         >
                             <div className="w-14 h-14 bg-white/10 rounded-xl flex items-center justify-center text-white mb-4 transition-all duration-300 group-hover:bg-white group-hover:text-[#0F2942]">
-                                <detail.icon className="w-6 h-6" strokeWidth={1.5} />
+                                <detail.icon className="w-6 h-6" style={{ color: detail.color }} strokeWidth={1.5} />
                             </div>
                             <h3 className="text-xl font-bold text-white mb-2">
                                 {detail.title}
