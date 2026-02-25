@@ -6,78 +6,70 @@ import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import BookConsultationDialog from './BookConsultationDialog';
 
-const SLIDES = [
-    {
-        id: 1,
-        heading: "Nutrition & Diet",
-        subtext: "Nutrition is the foundation of physical strength, mental clarity, and long-term health. The right balance of macronutrients and micronutrients fuels performance and prevents lifestyle diseases.",
-        bullets: ["Sustainable weight management", "Improved digestion & metabolism", "Higher energy levels", "Stronger immunity"],
-        background: "/Hero_Bg1.svg"
-    },
-    {
-        id: 2,
-        heading: "Age-Group Specific",
-        subtext: "Different life stages require different nutrition and fitness approaches from growth and development to muscle maintenance and mobility support.",
-        bullets: ["Supports healthy growth in youth", "Maintains muscle & bone density in adults", "Enhances mobility & vitality in seniors"],
-        background: "/Hero_Bg2.svg"
-    },
-    {
-        id: 3,
-        heading: "Gym & Workouts",
-        subtext: "Regular exercise strengthens the body, boosts mental resilience, and reduces the risk of chronic disease.",
-        bullets: ["Fat loss & muscle gain", "Improved cardiovascular health", "Better posture & mobility", "Stress reduction"],
-        background: "/Hero_Bg3.svg"
-    },
-    {
-        id: 4,
-        heading: "Corporate Wellness",
-        subtext: "Employee health directly impacts productivity, morale, and long-term organizational success.",
-        bullets: ["Reduced absenteeism", "Increased focus & productivity", "Better team morale", "Lower healthcare costs"],
-        background: "/Hero_Bg4.svg"
-    },
-    {
-        id: 5,
-        heading: "Woman’s Health",
-        subtext: "Women experience unique hormonal and physiological changes that require specialized care and attention.",
-        bullets: ["Hormonal balance support", "Improved reproductive health", "Stronger bones & metabolism", "Stress & fatigue management"],
-        background: "/Hero_Bg5.svg"
-    },
-    {
-        id: 6,
-        heading: "Health Specific Programs",
-        subtext: "Targeted programs are essential for managing and improving specific health conditions safely and effectively.",
-        bullets: ["Improved thyroid function support", "Reduced joint pain & better flexibility", "Controlled blood pressure levels", "Enhanced quality of life"],
-        background: "/Hero_Bg6.svg"
-    },
-    {
-        id: 7,
-        heading: "Lifestyle Habits",
-        subtext: "Daily habits shape long-term health outcomes. Small, consistent changes lead to lasting transformation.",
-        bullets: ["Improved sleep quality", "Better stress management", "Enhanced mental clarity", "Long-term disease prevention"],
-        background: "/Hero_Bg7.svg"
-    },
-    {
-        id: 8,
-        heading: "Ayurveda",
-        subtext: "Ayurveda promotes balance between body, mind, and environment through natural healing principles.",
-        bullets: ["Improved digestion & detoxification", "Strengthened immunity", "Balanced energy levelse", "Natural preventive care"],
-        background: "/Hero_Bg8.svg"
-    },
-];
+interface Program {
+    id: string;
+    heading: string;
+    subtext: string;
+    background?: string;
+    homeHeading?: string;
+    homeSubtext?: string;
+    homeBackground?: string;
+    bullets: string[];
+    isActive?: boolean;
+}
 
 export default function Hero() {
+    const [slides, setSlides] = useState<Program[]>([]);
     const [currentSlide, setCurrentSlide] = useState(0);
     const [isConsultationOpen, setIsConsultationOpen] = useState(false);
 
     useEffect(() => {
+        const fetchPrograms = async () => {
+            try {
+                const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000/api'}/programs`);
+                if (res.ok) {
+                    const data: Program[] = await res.json();
+                    if (data && data.length > 0) {
+                        const activePrograms = data.filter(p => p.isActive !== false);
+                        setSlides(activePrograms);
+                    }
+                }
+            } catch (error) {
+                console.error("Failed to fetch programs", error);
+            }
+        };
+        fetchPrograms();
+    }, []);
+
+    useEffect(() => {
+        if (slides.length === 0) return;
         const timer = setInterval(() => {
-            setCurrentSlide((prev) => (prev + 1) % SLIDES.length);
+            setCurrentSlide((prev) => (prev + 1) % slides.length);
         }, 5000); // Change slide every 5 seconds
 
         return () => clearInterval(timer);
-    }, []);
+    }, [slides]);
 
-    const slide = SLIDES[currentSlide];
+    const slide = slides.length > 0 ? slides[currentSlide] : null;
+
+    if (!slide) {
+        return (
+            <section className="relative w-full min-h-[90vh] lg:min-h-[85vh] overflow-hidden flex items-center justify-center bg-gray-50/10">
+                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[#023051]"></div>
+            </section>
+        );
+    }
+
+
+    const backendUrl = (process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000/api').replace(/\/api$/, '');
+
+    const bgToUse = slide.homeBackground || slide.background;
+    const backgroundUrl = bgToUse?.startsWith('/uploads/')
+        ? `${backendUrl}${bgToUse}`
+        : bgToUse || '/Program_bg.png';
+
+    const displayHeading = slide.homeHeading || slide.heading;
+    const displaySubtext = slide.homeSubtext || slide.subtext;
 
     return (
         <section className="relative w-full min-h-[90vh] lg:min-h-[85vh] overflow-hidden">
@@ -85,7 +77,7 @@ export default function Hero() {
                 <motion.div
                     key={currentSlide}
                     className="absolute inset-0 w-full h-full bg-cover bg-[65%_center] lg:bg-center"
-                    style={{ backgroundImage: `url(${slide.background})` }}
+                    style={{ backgroundImage: `url(${backgroundUrl})` }}
                     initial={{ opacity: 0, x: 100 }}
                     animate={{ opacity: 1, x: 0 }}
                     exit={{ opacity: 0, x: -100 }}
@@ -129,12 +121,12 @@ export default function Hero() {
 
                                     {/* Heading */}
                                     <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-black text-[#023051] leading-[1.1] mb-6">
-                                        {slide.heading}
+                                        {displayHeading}
                                     </h1>
 
                                     {/* Subtext */}
                                     <p className="text-[15px] sm:text-[16px] md:text-[17px] text-[#000000] mb-6 max-w-lg mx-auto lg:mx-0 leading-relaxed font-medium opacity-90">
-                                        {slide.subtext}
+                                        {displaySubtext}
                                     </p>
 
                                     <div className="mb-4 text-center lg:text-left w-full max-w-lg mx-auto lg:mx-0">

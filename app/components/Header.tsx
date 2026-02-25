@@ -1,115 +1,52 @@
 "use client";
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { usePathname } from 'next/navigation';
 import Link from 'next/link';
 import Image from 'next/image';
 import { Menu, X, Search, User, Languages, ChevronRight, ChevronDown, BookOpen } from 'lucide-react';
 
 import ConsultationDialog from './ConsultationDialog';
+import * as LucideIcons from 'lucide-react';
+import { DynamicIcon } from './DynamicIcon';
 
-const programsData = [
-    {
-        name: 'Diet & Nutrition',
-        icon: '/Header/Diet.svg',
-        href: '/programs/diet',
-        subItems: [
-            { name: 'Weight Loss', href: '/programs/diet#weight-loss' },
-            { name: 'Muscle Gain', href: '/programs/diet#muscle-gain' },
-            { name: '3 Meals a day Veg/Non Veg', href: '/programs/diet#3-meals-a-day' },
-            { name: 'Busy Routine Meals', href: '/programs/diet#busy-routine-hacks' },
-            { name: 'Healthy Snacking', href: '/programs/diet#healthy-snacking' },
-            { name: 'PCOS/PCOD Friendly', href: '/programs/diet#pcos-pcod-friendly' },
-            { name: 'Thyroid Friendly', href: '/programs/diet#thyroid-friendly' },
-            { name: 'Diabetes Friendly', href: '/programs/diet#diabetes-friendly' },
-            { name: 'Meals For Busy Professionals', href: '/programs/diet#meals-for-busy-professionals' },
-        ]
-    },
-    {
-        name: 'Age Group Specific',
-        icon: '/Header/Age.svg',
-        href: '/programs/age',
-        subItems: [
-            { name: 'Childrens  (Ages 5 - 12)', href: '/programs/age#children' },
-            { name: 'Teenagers (Ages 13 - 19)', href: '/programs/age#teenagers' },
-            { name: 'Young Adults (20 - 30)', href: '/programs/age#young-adults' },
-            { name: 'Adults (31 - 45)', href: '/programs/age#adults' },
-            { name: 'Middle Aged (46 - 60)', href: '/programs/age#middle-aged' },
-            { name: 'Seniors (60+)', href: '/programs/age#seniors' },
-        ]
-    },
-    {
-        name: 'Gym & Workouts',
-        icon: '/Header/Gym.svg',
-        href: '/programs/gym',
-        subItems: [
-            { name: 'Home Workout', href: '/programs/gym#home-workout' },
-            { name: 'Beginner To Intermediate', href: '/programs/gym#beginner-to-intermediate' },
-            { name: 'Strength Training', href: '/programs/gym#strength-training' },
-            { name: 'Stretches & Mobility', href: '/programs/gym#stretches-mobility' },
-            { name: 'Zumba & Fitness', href: '/programs/gym#zumba-fitness' },
-            { name: 'Posture Correction Exercises', href: '/programs/gym#posture-correction' },
-            { name: 'Desk Job Fitness', href: '/programs/gym#desk-job-fitness' },
-        ]
-    },
-    {
-        name: 'Corporate Wellness',
-        icon: '/Header/Corporate.svg',
-        href: '/programs/corporate',
-        subItems: [
-            { name: 'Desk Job Fitness Routine', href: '/programs/corporate#desk-job-fitness' },
-            { name: 'Meal Planing For Professionals', href: '/programs/corporate#meal-planning-for-professionals' },
-            { name: 'Office Stretches & Eye Care', href: '/programs/corporate#office-stretches-eye-care' },
-            { name: 'Mental Health At Workplace', href: '/programs/corporate#mental-health-at-workplace' },
-        ]
-    },
-    {
-        name: 'Woman’s Health',
-        icon: '/Header/Woman.svg',
-        href: '/programs/woman-health',
-        subItems: [
-            { name: 'Managing PCOS/PCOD Naturally', href: '/programs/woman-health#pcos' },
-            { name: 'Menopause Wellness', href: '/programs/woman-health#menopause' },
-            { name: 'Postnatal Fitness & Nutrition Guide', href: '/programs/woman-health#postnatal' },
-        ]
-    },
-    {
-        name: 'Health Specific Programs',
-        icon: '/Header/Health.svg',
-        href: '/programs/health-programs',
-        subItems: [
-            { name: 'Thyroid Disorders', href: '/programs/health-programs#thyroid-disorders' },
-            { name: 'Joint Pain Relief & Mobility', href: '/programs/health-programs#joint-pain' },
-            { name: 'Hypertension Therapy', href: '/programs/health-programs#hypertension-therapy' },
-            { name: 'Beginners & Intermediate', href: '/programs/health-programs#beginners' },
-            { name: 'Special Guide', href: '/programs/health-programs#special-guide' },
-            { name: 'Healing, Exercises & Regular Practices', href: '/programs/health-programs#healing-exercises' },
-        ]
-    },
-    {
-        name: 'Lifestyle Habits',
-        icon: '/Header/LifeStyle.svg',
-        href: '/programs/lifestyle',
-        subItems: [
-            { name: '28 Days Wellness Challenge (Habit Building)', href: '/programs/lifestyle#wellness-challenge' },
-            { name: 'Sleep Screen time & Productivity', href: '/programs/lifestyle#sleep-screen-time-productivity' },
-            { name: 'Weekend Detox', href: '/programs/lifestyle#weekend-detox' },
-            { name: 'Healthy Routine Set up ', href: '/programs/lifestyle#healthy-routine-setup' },
-        ]
-    },
-    {
-        name: 'Ayurveda',
-        icon: '/Header/Ayurveda.svg',
-        href: '/programs/ayurveda',
-        subItems: [
-            { name: 'Immunity Boosting Herbs', href: '/programs/ayurveda#immunity-boosting' },
-            { name: 'Ayurvedic Morning Routine', href: '/programs/ayurveda#ayurvedic-morning' },
-            { name: 'Seasonal Detox', href: '/programs/ayurveda#seasonal-detox' },
-        ]
-    },
-];
+interface SubItem {
+    name: string;
+    href: string;
+}
+
+interface ProgramData {
+    id?: string;
+    name: string;
+    icon: string;
+    href: string;
+    subItems?: (SubItem | any)[];
+    solutions?: { title: string }[];
+    isActive?: boolean;
+    iconColor?: string;
+}
 
 const Header = () => {
+    const [programsData, setProgramsData] = useState<ProgramData[]>([]);
+
+    useEffect(() => {
+        const fetchPrograms = async () => {
+            try {
+                const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000/api'}/programs`);
+                if (res.ok) {
+                    const data: ProgramData[] = await res.json();
+                    if (data && data.length > 0) {
+                        const activePrograms = data.filter(p => p.isActive !== false);
+                        setProgramsData(activePrograms);
+                    }
+                }
+            } catch (error) {
+                console.error("Failed to fetch programs", error);
+            }
+        };
+        fetchPrograms();
+    }, []);
+
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [isConsultationOpen, setIsConsultationOpen] = useState(false);
 
@@ -179,58 +116,55 @@ const Header = () => {
                                     <div className="absolute top-8 left-0 pt-4 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 transform translate-y-2 group-hover:translate-y-0 w-[280px]">
                                         <div className="bg-white shadow-xl border border-gray-100">
                                             <div className="flex flex-col gap-1 relative">
-                                                {programsData.map((item) => (
-                                                    <div key={item.name} className="relative group/item">
+                                                {programsData.map((item, index) => (
+                                                    <div key={item.id || `${item.name}-${index}`} className="relative group/item">
                                                         <Link
                                                             href={item.href}
                                                             className="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-50 transition-colors relative overflow-hidden"
+                                                            style={{ '--hover-color': item.iconColor || '#023051' } as React.CSSProperties}
                                                         >
                                                             {/* Hover sidebar accent */}
-                                                            <div className="absolute left-0 top-0 bottom-0 w-[3px] bg-[#023051] opacity-0 group-hover/item:opacity-100 transition-opacity" />
+                                                            <div className="absolute left-0 top-0 bottom-0 w-[3px] opacity-0 group-hover/item:opacity-100 transition-opacity bg-[var(--hover-color)]" />
 
-                                                            <div
-                                                                className="w-6 h-6 bg-black transition-colors duration-300 group-hover/item:bg-[#023051]"
-                                                                style={{
-                                                                    maskImage: `url(${item.icon})`,
-                                                                    maskSize: 'contain',
-                                                                    maskRepeat: 'no-repeat',
-                                                                    maskPosition: 'center',
-                                                                    WebkitMaskImage: `url(${item.icon})`,
-                                                                    WebkitMaskSize: 'contain',
-                                                                    WebkitMaskRepeat: 'no-repeat',
-                                                                    WebkitMaskPosition: 'center'
-                                                                }}
-                                                            />
+                                                            <div className="w-6 h-6 flex items-center justify-center text-[color:var(--hover-color)] transition-colors duration-300">
+                                                                <DynamicIcon name={item.icon || 'Activity'} className="w-full h-full" />
+                                                            </div>
 
-                                                            <span className="text-[14px] font-medium text-black group-hover/item:text-[#023051] transition-colors flex-1">
+                                                            <span className="text-[14px] font-medium text-black group-hover/item:text-[color:var(--hover-color)] transition-colors flex-1">
                                                                 {item.name}
                                                             </span>
-                                                            <ChevronRight className="w-4 h-4 text-black opacity-0 -translate-x-2 group-hover/item:opacity-100 group-hover/item:translate-x-0 group-hover/item:text-[#023051] transition-all duration-300" />
+                                                            <ChevronRight className="w-4 h-4 text-black opacity-0 -translate-x-2 group-hover/item:opacity-100 group-hover/item:translate-x-0 group-hover/item:text-[color:var(--hover-color)] transition-all duration-300" />
                                                         </Link>
 
                                                         {/* Nested Submenu */}
-                                                        {item.subItems && (
+                                                        {item.solutions && item.solutions.length > 0 && (
                                                             <div className="absolute top-0 left-full hidden group-hover/item:block w-[260px] z-50">
                                                                 <div className="bg-white shadow-[2px_2px_6px_-2px_rgba(0,0,0,0.15)]">
                                                                     <div className="flex flex-col gap-1">
-                                                                        {item.subItems.map((subItem) => (
-                                                                            <Link
-                                                                                key={subItem.name}
-                                                                                href={subItem.href}
-                                                                                className="group/subitem relative flex items-center gap-3 px-3 py-2.5 rounded-md transition-all hover:bg-slate-50 overflow-hidden"
-                                                                            >
-                                                                                {/* Left Blue Bar */}
-                                                                                <div className="absolute left-0 top-0 bottom-0 w-[3px] bg-[#023051] opacity-0 group-hover/subitem:opacity-100 transition-opacity duration-200" />
+                                                                        {item.solutions.map((sol: any, index) => {
+                                                                            if (!sol || typeof sol !== 'object' || Array.isArray(sol) || !sol.title || sol.isActive === false) { return null; }
+                                                                            const name = sol.title || 'Unnamed';
+                                                                            const slugId = name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)+/g, '');
+                                                                            const href = `${item.href}#${slugId}`;
+                                                                            return (
+                                                                                <Link
+                                                                                    key={`${name}-${index}`}
+                                                                                    href={href}
+                                                                                    className="group/subitem relative flex items-center gap-3 px-3 py-2.5 rounded-md transition-all hover:bg-slate-50 overflow-hidden"
+                                                                                >
+                                                                                    {/* Left Blue Bar */}
+                                                                                    <div className="absolute left-0 top-0 bottom-0 w-[3px] bg-[#023051] opacity-0 group-hover/subitem:opacity-100 transition-opacity duration-200" />
 
-                                                                                {/* Dot */}
-                                                                                <div className="w-1.5 h-1.5 rounded-full bg-[#023051] opacity-0 group-hover/subitem:opacity-100 transition-opacity duration-200 shrink-0" />
+                                                                                    {/* Dot */}
+                                                                                    <div className="w-1.5 h-1.5 rounded-full bg-[#023051] opacity-0 group-hover/subitem:opacity-100 transition-opacity duration-200 shrink-0" />
 
-                                                                                {/* Text */}
-                                                                                <span className="text-[14px] font-medium text-black group-hover/subitem:text-[#023051] group-hover/subitem:font-medium transition-colors flex-1">
-                                                                                    {subItem.name}
-                                                                                </span>
-                                                                            </Link>
-                                                                        ))}
+                                                                                    {/* Text */}
+                                                                                    <span className="text-[14px] font-medium text-black group-hover/subitem:text-[#023051] group-hover/subitem:font-bold transition-colors flex-1">
+                                                                                        {name}
+                                                                                    </span>
+                                                                                </Link>
+                                                                            );
+                                                                        })}
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -315,47 +249,44 @@ const Header = () => {
                                         {/* Programs Categories */}
                                         <div className={`overflow-hidden transition-all duration-300 ${expandedMobileSection === 'PROGRAMS' ? 'max-h-[2000px] opacity-100' : 'max-h-0 opacity-0'}`}>
                                             <div className="bg-gray-50/50 rounded-lg mx-2 border border-blue-50/50">
-                                                {programsData.map((category) => (
-                                                    <div key={category.name} className="border-b border-gray-100 last:border-0">
+                                                {programsData.map((category, index) => (
+                                                    <div key={category.id || `${category.name}-mobile-${index}`} className="border-b border-gray-100 last:border-0 relative">
                                                         <button
                                                             onClick={() => toggleProgramCategory(category.name)}
-                                                            className="w-full flex items-center justify-between px-4 py-3 text-sm font-semibold text-gray-700 hover:text-[#023051]"
+                                                            className="w-full flex items-center justify-between px-4 py-3 text-sm font-semibold text-gray-700 hover:text-[color:var(--hover-color)] transition-colors group/mobileitem"
+                                                            style={{ '--hover-color': category.iconColor || '#023051' } as React.CSSProperties}
                                                         >
                                                             <div className="flex items-center gap-3">
-                                                                <div
-                                                                    className="w-5 h-5 bg-gray-600"
-                                                                    style={{
-                                                                        maskImage: `url(${category.icon})`,
-                                                                        maskSize: 'contain',
-                                                                        maskRepeat: 'no-repeat',
-                                                                        maskPosition: 'center',
-                                                                        WebkitMaskImage: `url(${category.icon})`,
-                                                                        WebkitMaskSize: 'contain',
-                                                                        WebkitMaskRepeat: 'no-repeat',
-                                                                        WebkitMaskPosition: 'center'
-                                                                    }}
-                                                                />
+                                                                <div className="w-5 h-5 flex items-center justify-center text-[color:var(--hover-color)] transition-colors">
+                                                                    <DynamicIcon name={category.icon || 'Activity'} className="w-full h-full" />
+                                                                </div>
                                                                 {category.name}
                                                             </div>
-                                                            {category.subItems && (
-                                                                <ChevronDown className={`w-4 h-4 text-gray-400 transition-transform ${expandedProgramCategory === category.name ? 'rotate-180' : ''}`} />
+                                                            {category.solutions && category.solutions.length > 0 && (
+                                                                <ChevronDown className={`w-4 h-4 text-gray-400 group-hover/mobileitem:text-[color:var(--hover-color)] transition-all duration-300 ${expandedProgramCategory === category.name ? 'rotate-180' : ''}`} />
                                                             )}
                                                         </button>
 
                                                         {/* Category Subitems */}
-                                                        {category.subItems && (
+                                                        {category.solutions && category.solutions.length > 0 && (
                                                             <div className={`overflow-hidden transition-all duration-300 ${expandedProgramCategory === category.name ? 'max-h-[500px]' : 'max-h-0'}`}>
                                                                 <div className="bg-white pl-8 pr-4 py-2 space-y-1 border-t border-gray-100">
-                                                                    {category.subItems.map((subItem) => (
-                                                                        <Link
-                                                                            key={subItem.name}
-                                                                            href={subItem.href}
-                                                                            onClick={() => setIsMenuOpen(false)}
-                                                                            className="block px-4 py-2 text-sm text-gray-600 hover:text-[#023051] border-l-2 border-transparent hover:border-[#023051] transition-colors"
-                                                                        >
-                                                                            {subItem.name}
-                                                                        </Link>
-                                                                    ))}
+                                                                    {category.solutions.map((sol: any, index) => {
+                                                                        if (!sol || typeof sol !== 'object' || Array.isArray(sol) || !sol.title || sol.isActive === false) { return null; }
+                                                                        const name = sol.title || 'Unnamed';
+                                                                        const slugId = name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)+/g, '');
+                                                                        const href = `${category.href}#${slugId}`;
+                                                                        return (
+                                                                            <Link
+                                                                                key={`${name}-${index}`}
+                                                                                href={href}
+                                                                                onClick={() => setIsMenuOpen(false)}
+                                                                                className="block px-4 py-2 text-sm text-gray-600 hover:text-[#023051] border-l-2 border-transparent hover:border-[#023051] transition-colors"
+                                                                            >
+                                                                                {name}
+                                                                            </Link>
+                                                                        );
+                                                                    })}
                                                                 </div>
                                                             </div>
                                                         )}

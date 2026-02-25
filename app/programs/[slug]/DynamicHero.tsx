@@ -3,20 +3,35 @@
 import Image from 'next/image';
 import { motion } from 'framer-motion';
 
-export default function Hero() {
+interface HeroProps {
+    heading: string;
+    subtext: string;
+    background?: string;
+    programName?: string;
+}
+
+export default function DynamicHero({ heading, subtext, background, programName }: HeroProps) {
+    const backendUrl = (process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000/api').replace(/\/api$/, '');
+    const backgroundUrl = background?.startsWith('/uploads/')
+        ? `${backendUrl}${background}`
+        : background || '/Program_bg.png';
+
+    console.log(backgroundUrl);
+
     return (
         <section className="relative w-full h-[70vh] min-h-full flex items-center justify-center overflow-hidden">
             {/* Background Image */}
             <div className="absolute inset-0 z-0">
                 <Image
-                    src="/Corporate_bg.jpg"
+                    src={backgroundUrl}
                     alt="Programs Background"
                     fill
                     className="object-cover"
                     priority
+                    unoptimized
                 />
                 {/* Dark Overlay */}
-                <div className="absolute inset-0 bg-[#023051]/60" />
+                <div className="absolute inset-0 bg-[#023051]/30" />
             </div>
 
             {/* Content */}
@@ -30,18 +45,18 @@ export default function Hero() {
                     {/* Breadcrumbs */}
                     <div className="mb-10">
                         <span className="text-xs font-bold tracking-[0.2em] uppercase opacity-90">
-                            HOME &gt; PROGRAMS &gt; CORPORATE WELLNESS
+                            HOME &gt; PROGRAMS {programName ? `> ${programName.toUpperCase()}` : ''}
                         </span>
                     </div>
 
                     {/* Title */}
                     <h1 className="text-4xl md:text-6xl font-bold mb-10 tracking-tight">
-                        Corporate Wellness
+                        {heading}
                     </h1>
 
                     {/* Description */}
                     <p className="max-w-3xl mx-auto text-gray-200 text-base md:text-lg leading-relaxed font-light">
-                        A healthy workforce drives productivity, focus, and long-term organizational success. Healthstur designs structured wellness programs that enhance employee performance while reducing lifestyle-related risks.
+                        {subtext}
                     </p>
                 </motion.div>
             </div>
