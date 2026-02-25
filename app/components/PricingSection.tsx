@@ -29,7 +29,8 @@ const plansData = {
             ],
             icon: Star,
             highlighted: false,
-            buttonText: "BUY NOW"
+            buttonText: "BUY NOW",
+            image: "/Pricing1.png"
         },
         {
             name: "Pro",
@@ -52,7 +53,8 @@ const plansData = {
             ],
             icon: Zap,
             highlighted: true,
-            buttonText: "BUY NOW"
+            buttonText: "BUY NOW",
+            image: "/Pricing2.jpg"
         },
         {
             name: "Elite",
@@ -79,7 +81,8 @@ const plansData = {
             ],
             icon: Crown,
             highlighted: false,
-            buttonText: "BUY NOW"
+            buttonText: "BUY NOW",
+            image: "/Pricing3.png"
         }
     ],
     '6 Months': [
@@ -106,7 +109,8 @@ const plansData = {
             ],
             icon: Star,
             highlighted: false,
-            buttonText: "BUY NOW"
+            buttonText: "BUY NOW",
+            image: "/Pricing1.png"
         },
         {
             name: "Pro",
@@ -129,7 +133,8 @@ const plansData = {
             ],
             icon: Zap,
             highlighted: true,
-            buttonText: "BUY NOW"
+            buttonText: "BUY NOW",
+            image: "/Pricing2.jpg"
         },
         {
             name: "Elite",
@@ -156,7 +161,8 @@ const plansData = {
             ],
             icon: Crown,
             highlighted: false,
-            buttonText: "BUY NOW"
+            buttonText: "BUY NOW",
+            image: "/Pricing3.png"
         }
     ],
     '12 Months': [
@@ -183,7 +189,8 @@ const plansData = {
             ],
             icon: Star,
             highlighted: false,
-            buttonText: "BUY NOW"
+            buttonText: "BUY NOW",
+            image: "/Pricing1.png"
         },
         {
             name: "Pro",
@@ -206,7 +213,8 @@ const plansData = {
             ],
             icon: Zap,
             highlighted: true,
-            buttonText: "BUY NOW"
+            buttonText: "BUY NOW",
+            image: "/Pricing2.jpg"
         },
         {
             name: "Elite",
@@ -233,7 +241,8 @@ const plansData = {
             ],
             icon: Crown,
             highlighted: false,
-            buttonText: "BUY NOW"
+            buttonText: "BUY NOW",
+            image: "/Pricing3.png"
         }
     ]
 };
@@ -287,8 +296,17 @@ export default function PricingSection() {
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ duration: 0.3, delay: index * 0.1 }}
-                            className={`group relative rounded-[32px] p-6 md:p-8 flex flex-col border transition-all duration-300 bg-white text-[#023051] border-gray-300 z-0 hover:bg-[#023051] hover:text-white hover:border-[#023051] hover:shadow-xl  border-[#023051]/30`}
+                            className={`group relative overflow-hidden rounded-[32px] p-6 md:p-8 flex flex-col border transition-all duration-300 bg-white text-[#023051] border-gray-300 z-0 hover:text-white hover:border-transparent hover:shadow-xl`}
                         >
+                            {/* Hover Background Image */}
+                            <div className="absolute inset-0 z-[-1] opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none">
+                                <div
+                                    className="absolute inset-0 bg-cover bg-center"
+                                    style={{ backgroundImage: `url(${plan.image})` }}
+                                />
+                                <div className="absolute inset-0 bg-[#023051]/75" />
+                            </div>
+
                             {/* Most Popular Badge */}
                             {plan.highlighted && (
                                 <div className="absolute top-0 right-0 bg-[#023051] text-white px-5 py-2 rounded-bl-xl rounded-tr-[31px] text-xs font-bold uppercase tracking-widest shadow-sm z-20 group-hover:bg-white group-hover:text-[#023051] transition-colors duration-300">

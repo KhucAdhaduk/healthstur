@@ -77,7 +77,7 @@ const steps = [
 export default function WellnessStepsSection() {
     return (
         <section className="py-12 md:py-20 bg-white overflow-hidden">
-            <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl">
+            <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-5xl">
                 <div className="space-y-12 md:space-y-18">
                     {steps.map((step, index) => (
                         <div
@@ -128,9 +128,9 @@ export default function WellnessStepsSection() {
                                 whileInView={{ opacity: 1, x: 0 }}
                                 viewport={{ once: true, margin: "-100px" }}
                                 transition={{ duration: 0.6, delay: 0.4 }}
-                                className="flex-1 w-full relative flex justify-center"
+                                className="flex-1 w-full relative flex justify-center items-center"
                             >
-                                <div className="relative aspect-[4/3] w-full">
+                                <div className="relative w-full aspect-[4/4] md:aspect-[4/5] lg:aspect-square max-w-[350px] sm:max-w-[450px] md:max-w-[450px] overflow-hidden rounded-3xl">
                                     <Image
                                         src={step.image}
                                         alt={step.title}
