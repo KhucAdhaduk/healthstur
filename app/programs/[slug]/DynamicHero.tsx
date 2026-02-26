@@ -31,7 +31,7 @@ export default function DynamicHero({ heading, subtext, background, programName 
                     unoptimized
                 />
                 {/* Dark Overlay */}
-                <div className="absolute inset-0 bg-[#023051]/30" />
+                <div className="absolute inset-0 bg-[#02142d]/80" />
             </div>
 
             {/* Content */}

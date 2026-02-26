@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { ChevronDown } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
@@ -38,6 +38,26 @@ const faqs = [
 export default function FAQSection() {
     // Initialize with all closed (null)
     const [openIndex, setOpenIndex] = useState<number | null>(null);
+    const [dynamicFaqs, setDynamicFaqs] = useState<{ question: string, answer: string }[]>(faqs);
+
+    useEffect(() => {
+        const fetchFaqs = async () => {
+            try {
+                const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000/api';
+                const response = await fetch(`${apiUrl}/faq`);
+                if (response.ok) {
+                    const data = await response.json();
+                    if (data && data.length > 0) {
+                        setDynamicFaqs(data);
+                    }
+                }
+            } catch (error) {
+                console.error('Error fetching FAQs:', error);
+            }
+        };
+
+        fetchFaqs();
+    }, []);
 
     const toggleFAQ = (index: number) => {
         setOpenIndex(prev => (prev === index ? null : index));
@@ -66,7 +86,7 @@ export default function FAQSection() {
                     viewport={{ once: true }}
                     transition={{ duration: 0.8, delay: 0.2 }}
                 >
-                    {faqs.map((faq, index) => {
+                    {dynamicFaqs.map((faq, index) => {
                         const isOpen = openIndex === index;
                         return (
                             <div
