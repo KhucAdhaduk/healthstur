@@ -9,14 +9,18 @@ import { useState, useEffect } from 'react';
 
 export interface CuratedTrack {
     id: string;
-    title: string;
-    description: string;
-    image: string;
-    icon: string;
-    iconWidth: number;
-    iconHeight: number;
-    linkText: string;
-    isActive: boolean;
+    isActive?: boolean;
+    isCurated?: boolean;
+    href: string;
+
+    // Curated fields mapped from Program
+    curatedTitle?: string;
+    curatedDescription?: string;
+    curatedImage?: string;
+    curatedIcon?: string;
+    curatedIconWidth?: number;
+    curatedIconHeight?: number;
+    curatedLinkText?: string;
 }
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000/api';
@@ -50,9 +54,12 @@ export default function CuratedTracks() {
     useEffect(() => {
         const fetchTracks = async () => {
             try {
-                const res = await fetch(`${API_URL}/curated-tracks`);
+                const res = await fetch(`${API_URL}/programs`);
                 const data: CuratedTrack[] = await res.json();
-                setCards(data.filter(t => t.isActive !== false));
+
+                // Filter to only active programs that are marked as curated
+                const curatedPrograms = data.filter(p => p.isActive !== false && p.isCurated === true);
+                setCards(curatedPrograms);
             } catch (error) {
                 console.error('Error fetching curated tracks:', error);
             }
@@ -90,12 +97,13 @@ export default function CuratedTracks() {
                             layout
                             variants={cardVariants}
                             key={index}
+                            onClick={() => window.location.href = card.href || '#'}
                             className={`group relative h-[400px] md:h-[450px] rounded-[32px] overflow-hidden cursor-pointer shadow-lg hover:shadow-2xl transition-all duration-500`}
                         >
                             {/* Background Image */}
                             <Image
-                                src={card.image?.startsWith('http') ? card.image : `${ASSET_URL}${card.image}`}
-                                alt={card.title}
+                                src={card.curatedImage?.startsWith('http') ? card.curatedImage : `${ASSET_URL}${card.curatedImage || ''}`}
+                                alt={card.curatedTitle || 'Curated Track'}
                                 fill
                                 unoptimized
                                 className="object-cover transition-transform duration-700 group-hover:scale-104"
@@ -109,8 +117,8 @@ export default function CuratedTracks() {
                                 {/* Top Icon */}
                                 <div className="w-12 h-12 bg-white rounded-full flex items-center justify-center text-[#023051] shadow-md flex-shrink-0 transform group-hover:translate-y-0 transition-transform duration-500 delay-75">
                                     <DynamicIcon
-                                        name={card.icon || 'Activity'}
-                                        style={{ width: (card.iconWidth || 30) + 'px', height: (card.iconHeight || 30) + 'px' }}
+                                        name={card.curatedIcon || 'Activity'}
+                                        style={{ width: (card.curatedIconWidth || 30) + 'px', height: (card.curatedIconHeight || 30) + 'px' }}
                                     />
                                 </div>
 
@@ -118,17 +126,17 @@ export default function CuratedTracks() {
                                 <div className="flex flex-col justify-end h-full">
                                     {/* Title */}
                                     <h3 className="text-2xl md:text-3xl font-bold text-white mb-3 leading-tight drop-shadow-md">
-                                        {card.title}
+                                        {card.curatedTitle}
                                     </h3>
 
                                     {/* Description */}
                                     <p className="text-sm md:text-base text-gray-200 leading-relaxed mb-6 border-b border-white/20 pb-6">
-                                        {card.description}
+                                        {card.curatedDescription}
                                     </p>
 
                                     {/* Footer Link */}
                                     <div className="flex items-center justify-between">
-                                        <span className="text-sm font-semibold text-white">{card.linkText}</span>
+                                        <span className="text-sm font-semibold text-white">{card.curatedLinkText || 'Start Transformation'}</span>
                                         <div className="w-10 h-10 bg-white rounded-full flex items-center justify-center text-[#023051] transition-transform duration-300 hover:scale-110">
                                             <ArrowUpRight className="w-5 h-5" />
                                         </div>

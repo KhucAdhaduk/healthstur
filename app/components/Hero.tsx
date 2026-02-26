@@ -4,7 +4,7 @@ import { ChevronRight } from 'lucide-react';
 import Image from 'next/image';
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import BookConsultationDialog from './BookConsultationDialog';
+import Link from 'next/link';
 
 interface Program {
     id: string;
@@ -16,12 +16,12 @@ interface Program {
     homeBackground?: string;
     bullets: string[];
     isActive?: boolean;
+    href?: string;
 }
 
 export default function Hero() {
     const [slides, setSlides] = useState<Program[]>([]);
     const [currentSlide, setCurrentSlide] = useState(0);
-    const [isConsultationOpen, setIsConsultationOpen] = useState(false);
 
     useEffect(() => {
         const fetchPrograms = async () => {
@@ -153,13 +153,13 @@ export default function Hero() {
 
                                     {/* CTA */}
                                     <div className="flex justify-center lg:justify-start">
-                                        <button
-                                            onClick={() => setIsConsultationOpen(true)}
+                                        <Link
+                                            href={slide.href || '#'}
                                             className="w-full sm:w-auto group cursor-pointer flex items-center justify-center gap-2 bg-[#023051] text-white px-7 py-3 rounded-full text-base sm:text-lg font-bold hover:bg-[#023051]/95 transition-all shadow-xl hover:shadow-2xl active:scale-95"
                                         >
                                             <span>Start Transformation</span>
                                             <ChevronRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-                                        </button>
+                                        </Link>
                                     </div>
                                 </motion.div>
                             </AnimatePresence>
@@ -167,7 +167,6 @@ export default function Hero() {
                     </div>
                 </div >
             </div >
-            <BookConsultationDialog isOpen={isConsultationOpen} onClose={() => setIsConsultationOpen(false)} />
         </section >
     );
 }
