@@ -3,8 +3,14 @@
 import { motion } from 'framer-motion';
 import { Mail, Phone, MapPin, Instagram, Facebook, Twitter, Youtube, Send } from 'lucide-react';
 import Link from 'next/link';
+import { useCompanyInfo } from '@/context/CompanyInfoContext';
 
 export default function ContactFormSection() {
+    const { info } = useCompanyInfo();
+    
+    // Check if any socials exist to render the Follow On section
+    const hasSocials = info?.instagramUrl || info?.facebookUrl || info?.twitterUrl || info?.youtubeUrl;
+
     return (
         <section className="py-12 md:py-20 bg-white">
             <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl">
@@ -28,64 +34,78 @@ export default function ContactFormSection() {
 
                         <div className="space-y-6">
                             {/* Phone Card */}
-                            <div className="flex items-center p-4 border border-[#023051]/30 rounded-2xl hover:shadow-md transition-shadow">
-                                <div className="w-12 h-12 bg-[#023051] rounded-full flex items-center justify-center text-white mr-5 flex-shrink-0">
-                                    <Phone className="w-5 h-5" />
+                            {info?.phone && (
+                                <div className="flex items-center p-4 border border-[#023051]/30 rounded-2xl hover:shadow-md transition-shadow">
+                                    <div className="w-12 h-12 bg-[#023051] rounded-full flex items-center justify-center text-white mr-5 flex-shrink-0">
+                                        <Phone className="w-5 h-5" />
+                                    </div>
+                                    <div>
+                                        <p className="text-gray-900 font-bold text-lg">Contact No</p>
+                                        <a href={`tel:${info.phone.replace(/[^0-9+]/g, '')}`} className="text-gray-600 hover:text-[#023051] transition-colors font-medium">
+                                            {info.phone}
+                                        </a>
+                                    </div>
                                 </div>
-                                <div>
-                                    <p className="text-gray-900 font-bold text-lg">Contact No</p>
-                                    <a href="tel:+919998117873" className="text-gray-600 hover:text-[#023051] transition-colors font-medium">
-                                        +91 99981 17873
-                                    </a>
-                                </div>
-                            </div>
+                            )}
 
                             {/* Email Card */}
-                            <div className="flex items-center p-4 border border-[#023051]/30 rounded-2xl hover:shadow-md transition-shadow">
-                                <div className="w-12 h-12 bg-[#023051] rounded-full flex items-center justify-center text-white mr-5 flex-shrink-0">
-                                    <Mail className="w-5 h-5" />
+                            {info?.email && (
+                                <div className="flex items-center p-4 border border-[#023051]/30 rounded-2xl hover:shadow-md transition-shadow">
+                                    <div className="w-12 h-12 bg-[#023051] rounded-full flex items-center justify-center text-white mr-5 flex-shrink-0">
+                                        <Mail className="w-5 h-5" />
+                                    </div>
+                                    <div>
+                                        <p className="text-gray-900 font-bold text-lg">Email Address</p>
+                                        <a href={`mailto:${info.email}`} className="text-gray-600 hover:text-[#023051] transition-colors font-medium">
+                                            {info.email}
+                                        </a>
+                                    </div>
                                 </div>
-                                <div>
-                                    <p className="text-gray-900 font-bold text-lg">Email Address</p>
-                                    <a href="mailto:care.healthstur@gmail.com" className="text-gray-600 hover:text-[#023051] transition-colors font-medium">
-                                        care.healthstur@gmail.com
-                                    </a>
-                                </div>
-                            </div>
+                            )}
 
                             {/* Address Card */}
-                            <div className="flex items-center p-4 border border-[#023051]/30 rounded-2xl hover:shadow-md transition-shadow">
-                                <div className="w-12 h-12 bg-[#023051] rounded-full flex items-center justify-center text-white mr-5 flex-shrink-0">
-                                    <MapPin className="w-5 h-5" />
+                            {info?.address && (
+                                <div className="flex items-center p-4 border border-[#023051]/30 rounded-2xl hover:shadow-md transition-shadow">
+                                    <div className="w-12 h-12 bg-[#023051] rounded-full flex items-center justify-center text-white mr-5 flex-shrink-0">
+                                        <MapPin className="w-5 h-5" />
+                                    </div>
+                                    <div>
+                                        <p className="text-gray-900 font-bold text-lg">Office Address</p>
+                                        <p className="text-gray-600 font-medium whitespace-pre-line">
+                                            {info.address}
+                                        </p>
+                                    </div>
                                 </div>
-                                <div>
-                                    <p className="text-gray-900 font-bold text-lg">Office Address</p>
-                                    <p className="text-gray-600 font-medium">
-                                        Address<br />Address
-                                    </p>
-                                </div>
-                            </div>
+                            )}
                         </div>
 
-                        <div className="pt-6">
-                            <h4 className="text-[#023051] font-bold text-lg mb-4">Follow On:</h4>
-                            <div className="flex gap-4">
-                                {[
-                                    { icon: Instagram, href: "#" },
-                                    { icon: Facebook, href: "#" },
-                                    { icon: Twitter, href: "#" }, // Note: Lucide might not have 'X' icon directly named X, checking usually Twitter or X
-                                    { icon: Youtube, href: "#" }
-                                ].map((Social, index) => (
-                                    <Link
-                                        key={index}
-                                        href={Social.href}
-                                        className="w-10 h-10 border border-[#023051] rounded-full flex items-center justify-center text-[#023051] hover:bg-[#023051] hover:text-white transition-all duration-300"
-                                    >
-                                        <Social.icon className="w-5 h-5" />
-                                    </Link>
-                                ))}
+                        {hasSocials && (
+                            <div className="pt-6">
+                                <h4 className="text-[#023051] font-bold text-lg mb-4">Follow On:</h4>
+                                <div className="flex gap-4">
+                                    {info?.instagramUrl && (
+                                        <Link href={info.instagramUrl} target="_blank" rel="noopener noreferrer" className="w-10 h-10 border border-[#023051] rounded-full flex items-center justify-center text-[#023051] hover:bg-[#023051] hover:text-white transition-all duration-300">
+                                            <Instagram className="w-5 h-5" />
+                                        </Link>
+                                    )}
+                                    {info?.facebookUrl && (
+                                        <Link href={info.facebookUrl} target="_blank" rel="noopener noreferrer" className="w-10 h-10 border border-[#023051] rounded-full flex items-center justify-center text-[#023051] hover:bg-[#023051] hover:text-white transition-all duration-300">
+                                            <Facebook className="w-5 h-5" />
+                                        </Link>
+                                    )}
+                                    {info?.twitterUrl && (
+                                        <Link href={info.twitterUrl} target="_blank" rel="noopener noreferrer" className="w-10 h-10 border border-[#023051] rounded-full flex items-center justify-center text-[#023051] hover:bg-[#023051] hover:text-white transition-all duration-300">
+                                            <Twitter className="w-5 h-5" />
+                                        </Link>
+                                    )}
+                                    {info?.youtubeUrl && (
+                                        <Link href={info.youtubeUrl} target="_blank" rel="noopener noreferrer" className="w-10 h-10 border border-[#023051] rounded-full flex items-center justify-center text-[#023051] hover:bg-[#023051] hover:text-white transition-all duration-300">
+                                            <Youtube className="w-5 h-5" />
+                                        </Link>
+                                    )}
+                                </div>
                             </div>
-                        </div>
+                        )}
                     </motion.div>
 
                     {/* Right Column: Contact Form */}

@@ -4,12 +4,14 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { Mail, Phone, MapPin, Instagram, Twitter, Youtube, Facebook } from 'lucide-react';
+import { useCompanyInfo } from '@/context/CompanyInfoContext';
 
 import { motion } from 'framer-motion';
 import BookConsultationDialog from './BookConsultationDialog';
 
 const Footer = () => {
     const [isConsultationOpen, setIsConsultationOpen] = useState(false);
+    const { info } = useCompanyInfo();
     
     // Dynamic data states
     const [programsData, setProgramsData] = useState<any[]>([]);
@@ -76,24 +78,30 @@ const Footer = () => {
                         </p>
 
                         <div className="space-y-4">
-                            <a href="mailto:care.healthstur@gmail.com" className="flex items-center gap-3 text-gray-300 hover:text-white transition-colors group">
-                                <div className="w-10 h-10 rounded-full bg-[#00284D] flex items-center justify-center group-hover:bg-[#00355E] transition-colors">
-                                    <Mail className="w-4 h-4" />
+                            {info?.email && (
+                                <a href={`mailto:${info.email}`} className="flex items-center gap-3 text-gray-300 hover:text-white transition-colors group">
+                                    <div className="w-10 h-10 rounded-full bg-[#00284D] flex items-center justify-center group-hover:bg-[#00355E] transition-colors">
+                                        <Mail className="w-4 h-4" />
+                                    </div>
+                                    <span className="text-sm font-bold">{info.email}</span>
+                                </a>
+                            )}
+                            {info?.phone && (
+                                <a href={`tel:${info.phone.replace(/[^0-9+]/g, '')}`} className="flex items-center gap-3 text-gray-300 hover:text-white transition-colors group">
+                                    <div className="w-10 h-10 rounded-full bg-[#00284D] flex items-center justify-center group-hover:bg-[#00355E] transition-colors">
+                                        <Phone className="w-4 h-4" />
+                                    </div>
+                                    <span className="text-sm font-bold">{info.phone}</span>
+                                </a>
+                            )}
+                            {info?.address && (
+                                <div className="flex items-center gap-3 text-gray-300">
+                                    <div className="w-10 h-10 rounded-full bg-[#00284D] flex items-center justify-center shrink-0">
+                                        <MapPin className="w-4 h-4" />
+                                    </div>
+                                    <span className="text-sm font-bold">{info.address.replace(/\n/g, ', ')}</span>
                                 </div>
-                                <span className="text-sm font-bold">care.healthstur@gmail.com</span>
-                            </a>
-                            <a href="tel:+91 9998117873" className="flex items-center gap-3 text-gray-300 hover:text-white transition-colors group">
-                                <div className="w-10 h-10 rounded-full bg-[#00284D] flex items-center justify-center group-hover:bg-[#00355E] transition-colors">
-                                    <Phone className="w-4 h-4" />
-                                </div>
-                                <span className="text-sm font-bold">+91 9998117873</span>
-                            </a>
-                            <div className="flex items-center gap-3 text-gray-300">
-                                <div className="w-10 h-10 rounded-full bg-[#00284D] flex items-center justify-center shrink-0">
-                                    <MapPin className="w-4 h-4" />
-                                </div>
-                                <span className="text-sm font-bold">123 Wellness Blvd, CA 90210</span>
-                            </div>
+                            )}
                         </div>
                     </div>
 
@@ -168,28 +176,37 @@ const Footer = () => {
                     </div>
 
                     {/* Column 4: Follow Us */}
-                    <div>
-                        <h4 className="text-lg font-bold mb-8">Follow Us</h4>
-                        <div className="flex flex-col gap-4">
-                            <Link href="#" className="flex items-center gap-3 bg-[#00284D] hover:bg-[#00355E] p-3 rounded-lg transition-colors group">
-                                <Instagram className="w-5 h-5 text-gray-400 group-hover:text-white" />
-                                <span className="text-sm font-semibold text-gray-300 group-hover:text-white">Instagram</span>
-                            </Link>
-                            <Link href="#" className="flex items-center gap-3 bg-[#00284D] hover:bg-[#00355E] p-3 rounded-lg transition-colors group">
-                                <Twitter className="w-5 h-5 text-gray-400 group-hover:text-white" />
-                                <span className="text-sm font-semibold text-gray-300 group-hover:text-white">Twitter</span>
-                            </Link>
-                            <Link href="#" className="flex items-center gap-3 bg-[#00284D] hover:bg-[#00355E] p-3 rounded-lg transition-colors group">
-                                <Youtube className="w-5 h-5 text-gray-400 group-hover:text-white" />
-                                <span className="text-sm font-semibold text-gray-300 group-hover:text-white">Youtube</span>
-                            </Link>
-                            <Link href="#" className="flex items-center gap-3 bg-[#00284D] hover:bg-[#00355E] p-3 rounded-lg transition-colors group">
-                                <Facebook className="w-5 h-5 text-gray-400 group-hover:text-white" />
-                                <span className="text-sm font-semibold text-gray-300 group-hover:text-white">Facebook</span>
-                            </Link>
+                    {((info?.instagramUrl || info?.twitterUrl || info?.youtubeUrl || info?.facebookUrl) && (
+                        <div>
+                            <h4 className="text-lg font-bold mb-8">Follow Us</h4>
+                            <div className="flex flex-col gap-4">
+                                {info.instagramUrl && (
+                                    <Link href={info.instagramUrl} target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 bg-[#00284D] hover:bg-[#00355E] p-3 rounded-lg transition-colors group">
+                                        <Instagram className="w-5 h-5 text-gray-400 group-hover:text-white" />
+                                        <span className="text-sm font-semibold text-gray-300 group-hover:text-white">Instagram</span>
+                                    </Link>
+                                )}
+                                {info.twitterUrl && (
+                                    <Link href={info.twitterUrl} target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 bg-[#00284D] hover:bg-[#00355E] p-3 rounded-lg transition-colors group">
+                                        <Twitter className="w-5 h-5 text-gray-400 group-hover:text-white" />
+                                        <span className="text-sm font-semibold text-gray-300 group-hover:text-white">Twitter</span>
+                                    </Link>
+                                )}
+                                {info.youtubeUrl && (
+                                    <Link href={info.youtubeUrl} target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 bg-[#00284D] hover:bg-[#00355E] p-3 rounded-lg transition-colors group">
+                                        <Youtube className="w-5 h-5 text-gray-400 group-hover:text-white" />
+                                        <span className="text-sm font-semibold text-gray-300 group-hover:text-white">Youtube</span>
+                                    </Link>
+                                )}
+                                {info.facebookUrl && (
+                                    <Link href={info.facebookUrl} target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 bg-[#00284D] hover:bg-[#00355E] p-3 rounded-lg transition-colors group">
+                                        <Facebook className="w-5 h-5 text-gray-400 group-hover:text-white" />
+                                        <span className="text-sm font-semibold text-gray-300 group-hover:text-white">Facebook</span>
+                                    </Link>
+                                )}
+                            </div>
                         </div>
-                    </div>
-
+                    ))}
                 </div>
 
                 {/* Bottom Bar */}
