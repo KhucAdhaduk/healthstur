@@ -26,8 +26,16 @@ interface ProgramData {
     iconColor?: string;
 }
 
+interface ResourceData {
+    id: string;
+    title: string;
+    slug: string;
+    isActive: boolean;
+}
+
 const Header = () => {
     const [programsData, setProgramsData] = useState<ProgramData[]>([]);
+    const [resourcesData, setResourcesData] = useState<ResourceData[]>([]);
 
     useEffect(() => {
         const fetchPrograms = async () => {
@@ -44,7 +52,23 @@ const Header = () => {
                 console.error("Failed to fetch programs", error);
             }
         };
+
+        const fetchResources = async () => {
+            try {
+                const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000/api'}/resource`);
+                if (res.ok) {
+                    const data: ResourceData[] = await res.json();
+                    if (data && data.length > 0) {
+                        setResourcesData(data);
+                    }
+                }
+            } catch (error) {
+                console.error("Failed to fetch resources", error);
+            }
+        };
+
         fetchPrograms();
+        fetchResources();
     }, []);
 
     const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -208,12 +232,14 @@ const Header = () => {
                                     <div className="absolute top-8 left-0 pt-4 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 transform translate-y-2 group-hover:translate-y-0 w-[240px]">
                                         <div className="bg-white shadow-xl border border-gray-100 overflow-hidden">
                                             <div className="flex flex-col gap-1 py-2">
-                                                <Link href="/wellness" className="flex items-center gap-3 p-3 mx-2 rounded-lg hover:bg-gray-50 transition-colors group/item relative overflow-hidden">
-                                                    <div className="absolute left-0 top-0 bottom-0 w-[4px] bg-[#023051] opacity-0 group-hover/item:opacity-100 transition-opacity" />
-                                                    <BookOpen className="w-6 h-6 text-gray-500 group-hover/item:text-[#023051] transition-colors" />
-                                                    <span className="text-[14px] font-[500] text-gray-700 group-hover/item:text-[#023051] transition-colors">Wellness Guides</span>
-                                                </Link>
-                                                <Link href="/articals" className="flex items-center gap-3 p-3 mx-2 rounded-lg hover:bg-gray-50 transition-colors group/item relative overflow-hidden">
+                                                {resourcesData.map(resource => (
+                                                    <Link key={resource.id} href={`/resources/${resource.slug}`} className="flex items-center gap-3 p-3 mx-2 rounded-lg hover:bg-gray-50 transition-colors group/item relative overflow-hidden">
+                                                        <div className="absolute left-0 top-0 bottom-0 w-[4px] bg-[#023051] opacity-0 group-hover/item:opacity-100 transition-opacity" />
+                                                        <BookOpen className="w-6 h-6 text-gray-500 group-hover/item:text-[#023051] transition-colors" />
+                                                        <span className="text-[14px] font-[500] text-gray-700 group-hover/item:text-[#023051] transition-colors">{resource.title}</span>
+                                                    </Link>
+                                                ))}
+                                                <Link href="/resources/expert-articles" className="flex items-center gap-3 p-3 mx-2 rounded-lg hover:bg-gray-50 transition-colors group/item relative overflow-hidden">
                                                     <div className="absolute left-0 top-0 bottom-0 w-[4px] bg-[#023051] opacity-0 group-hover/item:opacity-100 transition-opacity" />
                                                     <User className="w-6 h-6 text-gray-500 group-hover/item:text-[#023051] transition-colors" />
                                                     <span className="text-[14px] font-[500] text-gray-700 group-hover/item:text-[#023051] transition-colors">Expert Articles</span>
@@ -338,18 +364,21 @@ const Header = () => {
                                         </button>
 
                                         {/* Resources Subitems */}
-                                        <div className={`overflow-hidden transition-all duration-300 ${expandedMobileSection === 'RESOURCES' ? 'max-h-[200px] opacity-100' : 'max-h-0 opacity-0'}`}>
+                                        <div className={`overflow-hidden transition-all duration-300 ${expandedMobileSection === 'RESOURCES' ? 'max-h-[500px] opacity-100' : 'max-h-0 opacity-0'}`}>
                                             <div className="bg-gray-50/50 rounded-lg mx-2 p-2 border border-blue-50/50">
+                                                {resourcesData.map(resource => (
+                                                    <Link
+                                                        key={resource.id}
+                                                        href={`/resources/${resource.slug}`}
+                                                        onClick={() => setIsMenuOpen(false)}
+                                                        className="flex items-center gap-3 p-3 rounded-lg hover:bg-white transition-colors"
+                                                    >
+                                                        <BookOpen className="w-5 h-5 text-gray-500" />
+                                                        <span className="text-sm font-medium text-gray-700">{resource.title}</span>
+                                                    </Link>
+                                                ))}
                                                 <Link
-                                                    href="/wellness"
-                                                    onClick={() => setIsMenuOpen(false)}
-                                                    className="flex items-center gap-3 p-3 rounded-lg hover:bg-white transition-colors"
-                                                >
-                                                    <BookOpen className="w-5 h-5 text-gray-500" />
-                                                    <span className="text-sm font-medium text-gray-700">Wellness Guides</span>
-                                                </Link>
-                                                <Link
-                                                    href="/articals"
+                                                    href="/resources/expert-articles"
                                                     onClick={() => setIsMenuOpen(false)}
                                                     className="flex items-center gap-3 p-3 rounded-lg hover:bg-white transition-colors"
                                                 >

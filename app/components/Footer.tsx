@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { Mail, Phone, MapPin, Instagram, Twitter, Youtube, Facebook } from 'lucide-react';
@@ -10,6 +10,45 @@ import BookConsultationDialog from './BookConsultationDialog';
 
 const Footer = () => {
     const [isConsultationOpen, setIsConsultationOpen] = useState(false);
+    
+    // Dynamic data states
+    const [programsData, setProgramsData] = useState<any[]>([]);
+    const [resourcesData, setResourcesData] = useState<any[]>([]);
+
+    useEffect(() => {
+        const fetchPrograms = async () => {
+            try {
+                const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000/api'}/programs`);
+                if (res.ok) {
+                    const data = await res.json();
+                    if (data && data.length > 0) {
+                        const activePrograms = data.filter((p: any) => p.isActive !== false);
+                        setProgramsData(activePrograms);
+                    }
+                }
+            } catch (error) {
+                console.error("Failed to fetch programs", error);
+            }
+        };
+
+        const fetchResources = async () => {
+            try {
+                const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000/api'}/resource`);
+                if (res.ok) {
+                    const data = await res.json();
+                    if (data && data.length > 0) {
+                        const activeResources = data.filter((r: any) => r.isActive !== false);
+                        setResourcesData(activeResources);
+                    }
+                }
+            } catch (error) {
+                console.error("Failed to fetch resources", error);
+            }
+        };
+
+        fetchPrograms();
+        fetchResources();
+    }, []);
 
     return (
         <footer className="bg-[#023051] text-white pt-16 pb-6">
@@ -65,14 +104,19 @@ const Footer = () => {
                             <div className="h-[1px] bg-gray-700 flex-grow max-w-[100px]"></div>
                         </div>
                         <ul className="space-y-4 text-sm text-gray-400 font-medium">
-                            <li><Link href="#" className="hover:text-white transition-colors">Nutrition & Diet Plan</Link></li>
-                            <li><Link href="#" className="hover:text-white transition-colors">Age-Group Specific</Link></li>
-                            <li><Link href="#" className="hover:text-white transition-colors">Gym & Exercises</Link></li>
-                            <li><Link href="#" className="hover:text-white transition-colors">Corporate Wellness</Link></li>
-                            <li><Link href="#" className="hover:text-white transition-colors">Woman’s Health</Link></li>
-                            <li><Link href="#" className="hover:text-white transition-colors">Health Specific Programs</Link></li>
-                            <li><Link href="#" className="hover:text-white transition-colors">Lifestyle Habits</Link></li>
-                            <li><Link href="#" className="hover:text-white transition-colors">Ayurveda</Link></li>
+                            {programsData.length > 0 ? (
+                                programsData.map((program) => (
+                                    <li key={program.id || program.name}>
+                                        <Link href={program.href} className="hover:text-white transition-colors">
+                                            {program.name}
+                                        </Link>
+                                    </li>
+                                ))
+                            ) : (
+                                <>
+                                    <li><Link href="#" className="hover:text-white transition-colors">Loading Programs...</Link></li>
+                                </>
+                            )}
                         </ul>
                     </div>
 
@@ -105,8 +149,20 @@ const Footer = () => {
                                 <div className="h-[1px] bg-gray-700 flex-grow max-w-[100px]"></div>
                             </div>
                             <ul className="space-y-4 text-sm text-gray-400 font-medium">
-                                <li><Link href="/wellness" className="hover:text-white transition-colors">Wellness Guides</Link></li>
-                                <li><Link href="/articals" className="hover:text-white transition-colors">Expert Articles</Link></li>
+                                {resourcesData.length > 0 ? (
+                                    resourcesData.map((resource) => (
+                                        <li key={resource.id}>
+                                            <Link href={`/resources/${resource.slug}`} className="hover:text-white transition-colors">
+                                                {resource.title}
+                                            </Link>
+                                        </li>
+                                    ))
+                                ) : (
+                                    <>
+                                        <li><Link href="#" className="hover:text-white transition-colors">Loading Resources...</Link></li>
+                                    </>
+                                )}
+                                <li><Link href="/resources/expert-articles" className="hover:text-white transition-colors">Expert Articles</Link></li>
                             </ul>
                         </div>
                     </div>

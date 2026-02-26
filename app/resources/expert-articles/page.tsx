@@ -1,8 +1,8 @@
 "use client";
 
-import Footer from "../components/Footer";
-import Header from "../components/Header";
-import { SmoothReveal } from "../components/SmoothReveal";
+import Footer from "../../components/Footer";
+import Header from "../../components/Header";
+import { SmoothReveal } from "../../components/SmoothReveal";
 import Hero from "./Hero";
 import ArticlesContent from "./ArticlesContent";
 
