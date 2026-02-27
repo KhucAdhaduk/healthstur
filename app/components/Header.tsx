@@ -264,7 +264,7 @@ const Header = () => {
                 </nav>
 
                 {/* Actions */}
-                <div className="flex items-center gap-2 sm:gap-2">
+                <div className="flex items-center gap-4 sm:gap-2">
                     <button onClick={() => setIsSearchOpen(true)} className="text-[#023051] cursor-pointer hover:text-[#023051]/90 transition-colors" aria-label="Search">
                         <Search className="w-5 h-5 sm:w-6 sm:h-6" />
                     </button>
