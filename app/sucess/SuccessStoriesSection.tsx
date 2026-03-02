@@ -109,10 +109,12 @@ export default function SuccessStoriesSection() {
                                 >
                                     {/* Image Container */}
                                     <div className="relative h-64 md:h-72 w-full">
-                                        <img
+                                        <Image
                                             src={story.image?.startsWith('http') ? story.image : `${backendUrl}${story.image}`}
                                             alt={story.name}
-                                            className="object-cover w-full h-full"
+                                            fill
+                                            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                                            className="object-cover"
                                         />
                                         <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent" />
 

@@ -2,7 +2,7 @@
 
 import Image from 'next/image';
 import { motion } from 'framer-motion';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import StartApplicationDialog from '@/app/components/StartApplicationDialog';
 
 interface Solution {
@@ -11,6 +11,9 @@ interface Solution {
     description: string;
     approach: string;
     benefits: string;
+    priceIndia?: string;
+    priceUsa?: string;
+    priceEurope?: string;
     image: string;
 }
 
@@ -23,10 +26,46 @@ interface DynamicSolutionsProps {
 export default function DynamicSolutions({ heading, subtext, solutions }: DynamicSolutionsProps) {
     const [isDialogOpen, setIsDialogOpen] = useState(false);
     const [selectedProgram, setSelectedProgram] = useState('');
+    const [userCountry, setUserCountry] = useState<string | null>(null);
+
+    useEffect(() => {
+        // Hydrate initial country from local storage
+        const savedCountry = localStorage.getItem('selectedCountry');
+        if (savedCountry) {
+            setUserCountry(savedCountry);
+        }
+
+        // Listen for country changes
+        const handleCountryChange = () => {
+            setUserCountry(localStorage.getItem('selectedCountry'));
+        };
+
+        window.addEventListener('countryChange', handleCountryChange);
+        return () => {
+            window.removeEventListener('countryChange', handleCountryChange);
+        };
+    }, []);
 
     const handleStartNow = (programTitle: string) => {
         setSelectedProgram(programTitle);
         setIsDialogOpen(true);
+    };
+
+    const getPriceDisplay = (program: Solution) => {
+        if (!userCountry) return 'Start Now';
+
+        if (userCountry === 'india' && program.priceIndia) {
+            return `Start Now / ₹${program.priceIndia} Per 8 Week`;
+        }
+        if (userCountry === 'usa' && program.priceUsa) {
+            return `Start Now / $${program.priceUsa} Per 8 Week`;
+        }
+        if (userCountry === 'europe' && program.priceEurope) {
+            return `Start Now / €${program.priceEurope} Per 8 Week`;
+        }
+
+        // Fallback default
+        return 'Start Now';
     };
 
     const backendUrl = (process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000/api').replace(/\/api$/, '');
@@ -108,7 +147,7 @@ export default function DynamicSolutions({ heading, subtext, solutions }: Dynami
                                             onClick={() => handleStartNow(program.title)}
                                             className="bg-[#023051] cursor-pointer text-white px-6 py-2 rounded-full font-bold hover:bg-[#023051]/90 transition-all shadow-lg text-xs md:text-sm"
                                         >
-                                            Start Now
+                                            {getPriceDisplay(program)}
                                         </button>
                                     </div>
                                 </div>

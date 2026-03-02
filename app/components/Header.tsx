@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import { usePathname } from 'next/navigation';
 import Link from 'next/link';
 import Image from 'next/image';
-import { Menu, X, Search, User, Languages, ChevronRight, ChevronDown, BookOpen } from 'lucide-react';
+import { Menu, X, Search, User, Languages, ChevronRight, ChevronDown, BookOpen, Globe } from 'lucide-react';
 
 import ConsultationDialog from './ConsultationDialog';
 import SearchDialog from './SearchDialog';
@@ -114,6 +114,7 @@ const Header = () => {
                                 width={55}
                                 height={60}
                                 className="object-cover"
+                                priority={true}
                             />
                         </div>
                     </Link>
@@ -265,6 +266,14 @@ const Header = () => {
 
                 {/* Actions */}
                 <div className="flex items-center gap-4 sm:gap-2">
+                    <button
+                        onClick={() => window.dispatchEvent(new Event('openCountrySelect'))}
+                        className="text-[#023051] cursor-pointer hover:text-[#023051]/90 transition-colors"
+                        aria-label="Select Country"
+                    >
+                        <Globe className="w-5 h-5 sm:w-6 sm:h-6" />
+                    </button>
+
                     <button onClick={() => setIsSearchOpen(true)} className="text-[#023051] cursor-pointer hover:text-[#023051]/90 transition-colors" aria-label="Search">
                         <Search className="w-5 h-5 sm:w-6 sm:h-6" />
                     </button>

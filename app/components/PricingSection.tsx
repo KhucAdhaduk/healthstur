@@ -9,8 +9,22 @@ export default function PricingSection() {
     const [durations, setDurations] = useState<any[]>([]);
     const [activeDuration, setActiveDuration] = useState<string>('');
     const [loading, setLoading] = useState(true);
+    const [userCountry, setUserCountry] = useState<string | null>(null);
 
     useEffect(() => {
+        // Init country from local storage
+        const savedCountry = localStorage.getItem('selectedCountry');
+        if (savedCountry) {
+            setUserCountry(savedCountry);
+        }
+
+        // Listen for country changes
+        const handleCountryChange = () => {
+            setUserCountry(localStorage.getItem('selectedCountry'));
+        };
+
+        window.addEventListener('countryChange', handleCountryChange);
+
         const fetchPricing = async () => {
             try {
                 const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000/api'}/pricing/public`);
@@ -30,10 +44,30 @@ export default function PricingSection() {
             }
         };
         fetchPricing();
+
+        return () => {
+            window.removeEventListener('countryChange', handleCountryChange);
+        };
     }, []);
 
     const activeDurationObj = durations.find(d => d.id === activeDuration);
     const currentPlans = activeDurationObj?.plans || [];
+
+    const getPriceDisplay = (plan: any) => {
+        if (!userCountry) return <><span className="text-4xl md:text-5xl font-extrabold mr-2 transition-colors duration-300 text-[#023051] group-hover:text-white">${plan.price}</span></>;
+
+        if (userCountry === 'india' && plan.priceIndia) {
+            return <><span className="text-4xl md:text-5xl font-extrabold mr-2 transition-colors duration-300 text-[#023051] group-hover:text-white">₹{plan.priceIndia}</span></>;
+        }
+        if (userCountry === 'usa' && plan.priceUsa) {
+            return <><span className="text-4xl md:text-5xl font-extrabold mr-2 transition-colors duration-300 text-[#023051] group-hover:text-white">${plan.priceUsa}</span></>;
+        }
+        if (userCountry === 'europe' && plan.priceEurope) {
+            return <><span className="text-4xl md:text-5xl font-extrabold mr-2 transition-colors duration-300 text-[#023051] group-hover:text-white">€{plan.priceEurope}</span></>;
+        }
+
+        return <><span className="text-4xl md:text-5xl font-extrabold mr-2 transition-colors duration-300 text-[#023051] group-hover:text-white">${plan.price}</span></>;
+    };
 
     if (loading) {
         return (
@@ -126,7 +160,7 @@ export default function PricingSection() {
 
                                 {/* Price */}
                                 <div className="flex items-baseline mb-6">
-                                    <span className="text-4xl md:text-5xl font-extrabold mr-2 transition-colors duration-300 text-[#023051] group-hover:text-white">${plan.price}</span>
+                                    {getPriceDisplay(plan)}
                                     <span className="text-sm font-semibold transition-colors duration-300 text-gray-400 group-hover:text-gray-300">/Monthly</span>
                                 </div>
 
