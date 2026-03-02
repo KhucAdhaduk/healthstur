@@ -55,13 +55,13 @@ export default function DynamicSolutions({ heading, subtext, solutions }: Dynami
         if (!userCountry) return 'Start Now';
 
         if (userCountry === 'india' && program.priceIndia) {
-            return `Start Now / ₹${program.priceIndia} Per 12 Week`;
+            return `Start Now / ₹${program.priceIndia} Per 4 Week`;
         }
         if (userCountry === 'usa' && program.priceUsa) {
-            return `Start Now / $${program.priceUsa} Per 12 Week`;
+            return `Start Now / $${program.priceUsa} Per 4 Week`;
         }
         if (userCountry === 'europe' && program.priceEurope) {
-            return `Start Now / €${program.priceEurope} Per 12 Week`;
+            return `Start Now / €${program.priceEurope} Per 4 Week`;
         }
 
         // Fallback default
