@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Check, X } from 'lucide-react';
+import Image from 'next/image';
 
 const COUNTRIES = [
     {
@@ -139,9 +140,11 @@ export default function CountrySelectDialog() {
 
                                                 {/* Flag SVG Circle */}
                                                 <div className="w-20 h-20 rounded-full overflow-hidden shadow-md flex-shrink-0 relative bg-gray-100 flex items-center justify-center transition-transform duration-300">
-                                                    <img
+                                                    <Image
                                                         src={country.flag}
                                                         alt={country.name}
+                                                        width={80}
+                                                        height={80}
                                                         className={`w-full h-full object-cover ${country.id === 'india' ? 'scale-[1.35]' : 'scale-[1.15]'}`}
                                                     />
                                                 </div>

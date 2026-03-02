@@ -154,10 +154,18 @@ export default function Hero() {
                     initial="enter"
                     animate="center"
                     exit="exit"
-                    className="absolute inset-0 w-full h-full bg-cover bg-[65%_center] lg:bg-center"
-                    style={{ backgroundImage: `url(${backgroundUrl})` }}
+                    className="absolute inset-0 w-full h-full overflow-hidden"
                     transition={{ duration: 0.7, ease: [0.25, 0.1, 0.25, 1.0] as const }}
-                />
+                >
+                    <Image
+                        src={backgroundUrl}
+                        alt="Background"
+                        fill
+                        priority
+                        sizes="100vw"
+                        className="object-cover object-[65%_center] lg:object-center"
+                    />
+                </motion.div>
             </AnimatePresence>
 
             {/* Navigation Arrows for Desktop */}
