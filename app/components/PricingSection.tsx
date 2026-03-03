@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import { Check, Star } from 'lucide-react';
 import { DynamicIcon } from './DynamicIcon';
+import StartApplicationDialog from './StartApplicationDialog';
 
 export default function PricingSection() {
     const [durations, setDurations] = useState<any[]>([]);
@@ -11,6 +12,11 @@ export default function PricingSection() {
     const [loading, setLoading] = useState(true);
     const [userCountry, setUserCountry] = useState<string | null>(null);
     const [countries, setCountries] = useState<any[]>([]);
+
+    const [isAppOpen, setIsAppOpen] = useState(false);
+    const [selectedProgram, setSelectedProgram] = useState('');
+    const [selectedAmount, setSelectedAmount] = useState('');
+    const [selectedCurrency, setSelectedCurrency] = useState('');
 
     useEffect(() => {
         // Init country from local storage
@@ -73,10 +79,27 @@ export default function PricingSection() {
             if (country) symbol = country.currencySymbol;
         }
 
-        // Clean out any currency symbol the admin might have typed (e.g. if they typed "₹1499")
-        const cleanPrice = displayPrice.toString().replace(/^[^\d]+/, '').trim();
+        const cleanPrice = displayPrice.toString().replace(/^[^\d.]+/, '').trim();
 
         return <><span className="text-4xl md:text-5xl font-extrabold mr-2 transition-colors duration-300 text-[#023051] group-hover:text-white">{symbol}{cleanPrice}</span></>;
+    };
+
+    const handleBuyClick = (plan: any) => {
+        let displayPrice = plan.price || '---';
+        let actCurrency = 'USD';
+
+        if (userCountry && plan.prices && plan.prices[userCountry]) {
+            displayPrice = plan.prices[userCountry];
+            const country = countries.find(c => c.id === userCountry);
+            if (country) { actCurrency = country.currencyCode; }
+        }
+
+        const cleanPrice = displayPrice.toString().replace(/^[^\d.]+/, '').trim();
+
+        setSelectedProgram(plan.name);
+        setSelectedAmount(cleanPrice);
+        setSelectedCurrency(actCurrency);
+        setIsAppOpen(true);
     };
 
     if (loading) {
@@ -226,7 +249,10 @@ export default function PricingSection() {
                                 </div>
 
                                 {/* Button */}
-                                <button className="w-full py-4 rounded-xl font-bold cursor-pointer text-sm tracking-wider uppercase transition-all duration-300 mt-auto bg-[#eff5fc] text-[#023051] hover:bg-[#E2E8F0] group-hover:bg-white group-hover:text-[#023051] group-hover:hover:bg-gray-100">
+                                <button
+                                    onClick={() => handleBuyClick(plan)}
+                                    className="w-full py-4 rounded-xl font-bold cursor-pointer text-sm tracking-wider uppercase transition-all duration-300 mt-auto bg-[#eff5fc] text-[#023051] hover:bg-[#E2E8F0] group-hover:bg-white group-hover:text-[#023051] group-hover:hover:bg-gray-100"
+                                >
                                     {plan.buttonText}
                                 </button>
                             </motion.div>
@@ -234,6 +260,14 @@ export default function PricingSection() {
                     })}
                 </div>
             </div>
+
+            <StartApplicationDialog
+                isOpen={isAppOpen}
+                onClose={() => setIsAppOpen(false)}
+                selectedProgram={selectedProgram}
+                amount={selectedAmount}
+                currency={selectedCurrency}
+            />
         </section>
     );
 }

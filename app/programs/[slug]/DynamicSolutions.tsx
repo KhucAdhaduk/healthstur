@@ -25,6 +25,8 @@ interface DynamicSolutionsProps {
 export default function DynamicSolutions({ heading, subtext, solutions }: DynamicSolutionsProps) {
     const [isDialogOpen, setIsDialogOpen] = useState(false);
     const [selectedProgram, setSelectedProgram] = useState('');
+    const [selectedAmount, setSelectedAmount] = useState('');
+    const [selectedCurrency, setSelectedCurrency] = useState('');
     const [userCountry, setUserCountry] = useState<string | null>(null);
 
     const [isPricingOpen, setIsPricingOpen] = useState(false);
@@ -69,9 +71,27 @@ export default function DynamicSolutions({ heading, subtext, solutions }: Dynami
         setIsPricingOpen(true);
     };
 
-    const handleBuyNow = (programTitle: string, duration: string) => {
+    const handleBuyNow = (solution: Solution, duration: '4Week' | '8Week' | '12Week') => {
+        let displayPrice = '---';
+        let actCurrency = 'USD';
+
+        if (userCountry) {
+            const countryP = solution.prices?.[userCountry];
+            const countryInfo = countries.find(c => c.id === userCountry);
+
+            if (countryP && countryInfo) {
+                displayPrice = countryP[`price${duration}` as keyof typeof countryP] || '---';
+                actCurrency = countryInfo.currencyCode;
+            }
+        }
+
+        const cleanPrice = displayPrice.toString().replace(/^[^\d.]+/, '').trim();
+        const durationText = duration === '4Week' ? '4 Week' : duration === '8Week' ? '8 Week' : '12 Week';
+
         setIsPricingOpen(false);
-        setSelectedProgram(`${programTitle} - ${duration}`);
+        setSelectedProgram(`${solution.title} - ${durationText}`);
+        setSelectedAmount(cleanPrice);
+        setSelectedCurrency(actCurrency);
         setIsDialogOpen(true);
     };
 
@@ -225,7 +245,7 @@ export default function DynamicSolutions({ heading, subtext, solutions }: Dynami
                                         {getPrice(selectedPricingSolution, '4Week')}
                                     </p>
                                     <button
-                                        onClick={() => handleBuyNow(selectedPricingSolution.title, '4 Week')}
+                                        onClick={() => handleBuyNow(selectedPricingSolution, '4Week')}
                                         className="bg-[#023051] text-white px-8 py-2.5 rounded-full font-bold text-sm hover:bg-[#023051]/90 transition-all cursor-pointer shadow-md"
                                     >
                                         Buy Now
@@ -239,7 +259,7 @@ export default function DynamicSolutions({ heading, subtext, solutions }: Dynami
                                         {getPrice(selectedPricingSolution, '8Week')}
                                     </p>
                                     <button
-                                        onClick={() => handleBuyNow(selectedPricingSolution.title, '8 Week')}
+                                        onClick={() => handleBuyNow(selectedPricingSolution, '8Week')}
                                         className="bg-[#023051] text-white px-8 py-2.5 rounded-full font-bold text-sm hover:bg-[#023051]/90 transition-all cursor-pointer shadow-md"
                                     >
                                         Buy Now
@@ -253,7 +273,7 @@ export default function DynamicSolutions({ heading, subtext, solutions }: Dynami
                                         {getPrice(selectedPricingSolution, '12Week')}
                                     </p>
                                     <button
-                                        onClick={() => handleBuyNow(selectedPricingSolution.title, '12 Week')}
+                                        onClick={() => handleBuyNow(selectedPricingSolution, '12Week')}
                                         className="bg-[#023051] text-white px-8 py-2.5 rounded-full font-bold text-sm hover:bg-[#023051]/90 transition-all cursor-pointer shadow-md"
                                     >
                                         Buy Now
@@ -269,6 +289,8 @@ export default function DynamicSolutions({ heading, subtext, solutions }: Dynami
                 isOpen={isDialogOpen}
                 onClose={() => setIsDialogOpen(false)}
                 selectedProgram={selectedProgram}
+                amount={selectedAmount}
+                currency={selectedCurrency}
             />
         </section>
     );

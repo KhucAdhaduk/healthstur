@@ -7,7 +7,7 @@ import { useCompanyInfo } from '@/context/CompanyInfoContext';
 
 export default function ContactFormSection() {
     const { info } = useCompanyInfo();
-    
+
     // Check if any socials exist to render the Follow On section
     const hasSocials = info?.instagramUrl || info?.facebookUrl || info?.twitterUrl || info?.youtubeUrl;
 

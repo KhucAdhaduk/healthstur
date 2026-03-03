@@ -1,18 +1,18 @@
 "use client";
 
-import { useState, useEffect } from 'react';
-import Link from 'next/link';
-import Image from 'next/image';
-import { Mail, Phone, MapPin, Instagram, Twitter, Youtube, Facebook } from 'lucide-react';
 import { useCompanyInfo } from '@/context/CompanyInfoContext';
+import { Facebook, Instagram, Mail, MapPin, Phone, Twitter, Youtube } from 'lucide-react';
+import Image from 'next/image';
+import Link from 'next/link';
+import { useEffect, useState } from 'react';
 
 import { motion } from 'framer-motion';
-import BookConsultationDialog from './BookConsultationDialog';
+import ConsultationDialog from './ConsultationDialog';
 
 const Footer = () => {
     const [isConsultationOpen, setIsConsultationOpen] = useState(false);
     const { info } = useCompanyInfo();
-    
+
     // Dynamic data states
     const [programsData, setProgramsData] = useState<any[]>([]);
     const [resourcesData, setResourcesData] = useState<any[]>([]);
@@ -219,7 +219,7 @@ const Footer = () => {
                     </div>
                 </div>
             </motion.div>
-            <BookConsultationDialog isOpen={isConsultationOpen} onClose={() => setIsConsultationOpen(false)} />
+            <ConsultationDialog isOpen={isConsultationOpen} onClose={() => setIsConsultationOpen(false)} />
         </footer>
     );
 };

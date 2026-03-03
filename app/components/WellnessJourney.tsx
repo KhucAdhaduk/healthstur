@@ -35,7 +35,7 @@ const steps = [
 
 import { motion } from 'framer-motion';
 import { useState } from 'react';
-import BookConsultationDialog from './BookConsultationDialog';
+import ConsultationDialog from './ConsultationDialog';
 
 // ... (imports remain)
 
@@ -125,7 +125,7 @@ export default function WellnessJourney() {
                     </button>
                 </motion.div>
             </div>
-            <BookConsultationDialog isOpen={isConsultationOpen} onClose={() => setIsConsultationOpen(false)} />
+            <ConsultationDialog isOpen={isConsultationOpen} onClose={() => setIsConsultationOpen(false)} />
         </section >
     );
 }
