@@ -162,6 +162,7 @@ export default function Hero() {
                         alt="Background"
                         fill
                         priority
+                        unoptimized
                         sizes="100vw"
                         className="object-cover object-[65%_center] lg:object-center"
                     />
