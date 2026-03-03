@@ -22,14 +22,22 @@ const playfair = Playfair_Display({
 export const metadata: Metadata = {
   metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL || 'https://healthstur.com'),
   title: {
-    default: "Healthstur Fitness - Personalized Wellness & Transformation",
-    template: "%s | Healthstur Fitness",
+    default: "Healthstur - Personalized Wellness & Transformation",
+    template: "%s | Healthstur",
   },
-  description: "Experience a transformative wellness journey with Healthstur Fitness. Personalized programs, expert guidance, and community stories to help you achieve your health goals.",
+  description: "Experience a transformative wellness journey with Healthstur. Personalized programs, expert guidance, and community stories to help you achieve your health goals.",
   keywords: ["fitness", "wellness", "healthstur", "weight loss", "muscle gain", "personalized nutrition", "workout plans"],
-  authors: [{ name: "Healthstur Fitness" }],
-  creator: "Healthstur Fitness",
-  publisher: "Healthstur Fitness",
+  authors: [{ name: "Healthstur" }],
+  creator: "Healthstur",
+  publisher: "Healthstur",
+  icons: {
+    icon: [
+      { url: "/favicon.ico" },
+      { url: "/Logo.svg", type: "image/svg+xml" },
+    ],
+    shortcut: "/favicon.ico",
+    apple: "/Logo.svg",
+  },
   formatDetection: {
     email: false,
     address: false,
@@ -39,22 +47,22 @@ export const metadata: Metadata = {
     type: "website",
     locale: "en_US",
     url: "https://healthstur.com",
-    siteName: "Healthstur Fitness",
-    title: "Healthstur Fitness - Personalized Wellness & Transformation",
-    description: "Experience a transformative wellness journey with Healthstur Fitness. Personalized programs, expert guidance, and community stories.",
+    siteName: "Healthstur",
+    title: "Healthstur - Personalized Wellness & Transformation",
+    description: "Experience a transformative wellness journey with Healthstur. Personalized programs, expert guidance, and community stories.",
     images: [
       {
         url: "/og-image.png",
         width: 1200,
         height: 630,
-        alt: "Healthstur Fitness",
+        alt: "Healthstur",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Healthstur Fitness - Personalized Wellness & Transformation",
-    description: "Experience a transformative wellness journey with Healthstur Fitness.",
+    title: "Healthstur - Personalized Wellness & Transformation",
+    description: "Experience a transformative wellness journey with Healthstur.",
     images: ["/og-image.png"],
   },
   robots: {

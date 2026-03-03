@@ -16,7 +16,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
                     title: `${resource.title} | Wellness Resources`,
                     description: resource.heroDescription,
                     openGraph: {
-                        title: `${resource.title} | Wellness Resources | Healthstur Fitness`,
+                        title: `${resource.title} | Wellness Resources | Healthstur`,
                         description: resource.heroDescription,
                         images: resource.heroImage ? [{ url: (process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000/api').replace(/\/api$/, '') + resource.heroImage }] : [],
                     }

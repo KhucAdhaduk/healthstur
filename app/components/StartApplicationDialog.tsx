@@ -153,7 +153,7 @@ export default function StartApplicationDialog({ isOpen, onClose, selectedProgra
                 // Payment flow
                 const options = {
                     key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID || 'rzp_test_QGdFrCgX1jtz7u',
-                    name: 'Healthstur Fitness',
+                    name: 'Healthstur',
                     description: selectedProgram || 'Program Purchase',
                     order_id: data.razorpayOrderId,
                     handler: async function (res: any) {

@@ -13,8 +13,8 @@ import { SmoothReveal } from "./components/SmoothReveal";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Healthstur Fitness - Empowering Your Wellness Journey",
-  description: "Join Healthstur Fitness for a personalized approach to health. From curated tracks to community support, start your transformation today.",
+  title: "Healthstur - Empowering Your Wellness Journey",
+  description: "Join Healthstur for a personalized approach to health. From curated tracks to community support, start your transformation today.",
 };
 
 export default function Home() {

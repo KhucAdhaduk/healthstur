@@ -17,7 +17,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
                     title: program.name,
                     description: program.subtext,
                     openGraph: {
-                        title: `${program.name} | Healthstur Fitness`,
+                        title: `${program.name} | Healthstur`,
                         description: program.subtext,
                         images: program.background ? [{ url: (process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000/api').replace(/\/api$/, '') + program.background }] : [],
                     }
