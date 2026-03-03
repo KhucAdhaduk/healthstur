@@ -4,12 +4,19 @@ import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import { Check, Star } from 'lucide-react';
 import { DynamicIcon } from './DynamicIcon';
+import StartApplicationDialog from './StartApplicationDialog';
 
 export default function PricingSection() {
     const [durations, setDurations] = useState<any[]>([]);
     const [activeDuration, setActiveDuration] = useState<string>('');
     const [loading, setLoading] = useState(true);
     const [userCountry, setUserCountry] = useState<string | null>(null);
+    const [countries, setCountries] = useState<any[]>([]);
+
+    const [isAppOpen, setIsAppOpen] = useState(false);
+    const [selectedProgram, setSelectedProgram] = useState('');
+    const [selectedAmount, setSelectedAmount] = useState('');
+    const [selectedCurrency, setSelectedCurrency] = useState('');
 
     useEffect(() => {
         // Init country from local storage
@@ -25,25 +32,34 @@ export default function PricingSection() {
 
         window.addEventListener('countryChange', handleCountryChange);
 
-        const fetchPricing = async () => {
+        const fetchData = async () => {
             try {
-                const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000/api'}/pricing/public`);
-                if (res.ok) {
-                    const data = await res.json();
-                    // Filter out durations that have no plans
+                const apiBase = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000/api';
+                const [pricingRes, countriesRes] = await Promise.all([
+                    fetch(`${apiBase}/pricing/public`),
+                    fetch(`${apiBase}/countries/active`)
+                ]);
+
+                if (pricingRes.ok) {
+                    const data = await pricingRes.json();
                     const filteredData = data.filter((d: any) => d.plans && d.plans.length > 0);
                     setDurations(filteredData);
                     if (filteredData.length > 0) {
                         setActiveDuration(filteredData[0].id);
                     }
                 }
+
+                if (countriesRes.ok) {
+                    const countryData = await countriesRes.json();
+                    setCountries(countryData);
+                }
             } catch (error) {
-                console.error('Error fetching pricing:', error);
+                console.error('Error fetching data:', error);
             } finally {
                 setLoading(false);
             }
         };
-        fetchPricing();
+        fetchData();
 
         return () => {
             window.removeEventListener('countryChange', handleCountryChange);
@@ -54,19 +70,36 @@ export default function PricingSection() {
     const currentPlans = activeDurationObj?.plans || [];
 
     const getPriceDisplay = (plan: any) => {
-        if (!userCountry) return <><span className="text-4xl md:text-5xl font-extrabold mr-2 transition-colors duration-300 text-[#023051] group-hover:text-white">${plan.price}</span></>;
+        let displayPrice = plan.price || '---';
+        let symbol = '$';
 
-        if (userCountry === 'india' && plan.priceIndia) {
-            return <><span className="text-4xl md:text-5xl font-extrabold mr-2 transition-colors duration-300 text-[#023051] group-hover:text-white">₹{plan.priceIndia}</span></>;
-        }
-        if (userCountry === 'usa' && plan.priceUsa) {
-            return <><span className="text-4xl md:text-5xl font-extrabold mr-2 transition-colors duration-300 text-[#023051] group-hover:text-white">${plan.priceUsa}</span></>;
-        }
-        if (userCountry === 'europe' && plan.priceEurope) {
-            return <><span className="text-4xl md:text-5xl font-extrabold mr-2 transition-colors duration-300 text-[#023051] group-hover:text-white">€{plan.priceEurope}</span></>;
+        if (userCountry && plan.prices && plan.prices[userCountry]) {
+            displayPrice = plan.prices[userCountry];
+            const country = countries.find(c => c.id === userCountry);
+            if (country) symbol = country.currencySymbol;
         }
 
-        return <><span className="text-4xl md:text-5xl font-extrabold mr-2 transition-colors duration-300 text-[#023051] group-hover:text-white">${plan.price}</span></>;
+        const cleanPrice = displayPrice.toString().replace(/^[^\d.]+/, '').trim();
+
+        return <><span className="text-4xl md:text-5xl font-extrabold mr-2 transition-colors duration-300 text-[#023051] group-hover:text-white">{symbol}{cleanPrice}</span></>;
+    };
+
+    const handleBuyClick = (plan: any) => {
+        let displayPrice = plan.price || '---';
+        let actCurrency = 'USD';
+
+        if (userCountry && plan.prices && plan.prices[userCountry]) {
+            displayPrice = plan.prices[userCountry];
+            const country = countries.find(c => c.id === userCountry);
+            if (country) { actCurrency = country.currencyCode; }
+        }
+
+        const cleanPrice = displayPrice.toString().replace(/^[^\d.]+/, '').trim();
+
+        setSelectedProgram(plan.name);
+        setSelectedAmount(cleanPrice);
+        setSelectedCurrency(actCurrency);
+        setIsAppOpen(true);
     };
 
     if (loading) {
@@ -216,7 +249,10 @@ export default function PricingSection() {
                                 </div>
 
                                 {/* Button */}
-                                <button className="w-full py-4 rounded-xl font-bold cursor-pointer text-sm tracking-wider uppercase transition-all duration-300 mt-auto bg-[#eff5fc] text-[#023051] hover:bg-[#E2E8F0] group-hover:bg-white group-hover:text-[#023051] group-hover:hover:bg-gray-100">
+                                <button
+                                    onClick={() => handleBuyClick(plan)}
+                                    className="w-full py-4 rounded-xl font-bold cursor-pointer text-sm tracking-wider uppercase transition-all duration-300 mt-auto bg-[#eff5fc] text-[#023051] hover:bg-[#E2E8F0] group-hover:bg-white group-hover:text-[#023051] group-hover:hover:bg-gray-100"
+                                >
                                     {plan.buttonText}
                                 </button>
                             </motion.div>
@@ -224,6 +260,14 @@ export default function PricingSection() {
                     })}
                 </div>
             </div>
+
+            <StartApplicationDialog
+                isOpen={isAppOpen}
+                onClose={() => setIsAppOpen(false)}
+                selectedProgram={selectedProgram}
+                amount={selectedAmount}
+                currency={selectedCurrency}
+            />
         </section>
     );
 }

@@ -2,7 +2,7 @@
 
 import { motion } from 'framer-motion';
 import { useState } from 'react';
-import BookConsultationDialog from '../components/BookConsultationDialog';
+import ConsultationDialog from '../components/ConsultationDialog';
 
 export default function StartYourJourneySection() {
     const [isDialogOpen, setIsDialogOpen] = useState(false);
@@ -31,7 +31,7 @@ export default function StartYourJourneySection() {
                     </button>
                 </motion.div>
             </div>
-            <BookConsultationDialog
+            <ConsultationDialog
                 isOpen={isDialogOpen}
                 onClose={() => setIsDialogOpen(false)}
             />
