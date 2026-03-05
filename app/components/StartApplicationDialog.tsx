@@ -119,6 +119,8 @@ export default function StartApplicationDialog({ isOpen, onClose, selectedProgra
             newErrors.age = 'Enter a valid numeric age';
         }
 
+        if (!formData.medicalCondition.trim()) newErrors.medicalCondition = 'Medical condition is required';
+        if (!formData.allergies.trim()) newErrors.allergies = 'Allergies information is required';
         if (!formData.goal.trim()) newErrors.goal = 'Goal is required';
         if (!formData.duration.trim()) newErrors.duration = 'Duration is required';
         if (!formData.routine.trim()) newErrors.routine = 'Routine description is required';
@@ -381,22 +383,28 @@ export default function StartApplicationDialog({ isOpen, onClose, selectedProgra
                                                     {errors.age && <p className="text-red-500 text-xs mt-1 ml-1">{errors.age}</p>}
                                                 </div>
                                             </div>
-                                            <input
-                                                type="text"
-                                                name="medicalCondition"
-                                                placeholder="Medical Condition ( If any )"
-                                                value={formData.medicalCondition}
-                                                onChange={handleChange}
-                                                className="w-full px-4 py-3 rounded-2xl text-black border border-gray-400 focus:border-[#023051] focus:ring-1 focus:ring-[#023051] outline-none transition-all placeholder:text-gray-500"
-                                            />
-                                            <input
-                                                type="text"
-                                                name="allergies"
-                                                placeholder="Allergies ( If any )"
-                                                value={formData.allergies}
-                                                onChange={handleChange}
-                                                className="w-full px-4 py-3 rounded-2xl text-black border border-gray-400 focus:border-[#023051] focus:ring-1 focus:ring-[#023051] outline-none transition-all placeholder:text-gray-500"
-                                            />
+                                            <div>
+                                                <input
+                                                    type="text"
+                                                    name="medicalCondition"
+                                                    placeholder="Medical Condition"
+                                                    value={formData.medicalCondition}
+                                                    onChange={handleChange}
+                                                    className={`w-full px-4 py-3 rounded-2xl text-black border ${errors.medicalCondition ? 'border-red-500' : 'border-gray-400'} focus:border-[#023051] focus:ring-1 focus:ring-[#023051] outline-none transition-all placeholder:text-gray-500`}
+                                                />
+                                                {errors.medicalCondition && <p className="text-red-500 text-xs mt-1 ml-1">{errors.medicalCondition}</p>}
+                                            </div>
+                                            <div>
+                                                <input
+                                                    type="text"
+                                                    name="allergies"
+                                                    placeholder="Allergies"
+                                                    value={formData.allergies}
+                                                    onChange={handleChange}
+                                                    className={`w-full px-4 py-3 rounded-2xl text-black border ${errors.allergies ? 'border-red-500' : 'border-gray-400'} focus:border-[#023051] focus:ring-1 focus:ring-[#023051] outline-none transition-all placeholder:text-gray-500`}
+                                                />
+                                                {errors.allergies && <p className="text-red-500 text-xs mt-1 ml-1">{errors.allergies}</p>}
+                                            </div>
                                             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                                 <div>
                                                     <input
