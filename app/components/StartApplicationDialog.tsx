@@ -180,7 +180,6 @@ export default function StartApplicationDialog({ isOpen, onClose, selectedProgra
                                 alert('Payment verification failed. Please contact support.');
                             }
                         } catch (err) {
-                            console.error('Payment verification failed', err);
                             alert('An error occurred during payment verification.');
                         }
                     },
@@ -201,7 +200,6 @@ export default function StartApplicationDialog({ isOpen, onClose, selectedProgra
 
                 const rzp = new (window as any).Razorpay(options);
                 rzp.on('payment.failed', function (res: any) {
-                    console.error('Payment failed', res);
                     setIsSubmitting(false);
                     const errorMsg = res?.error?.description || res?.error?.reason || res?.description || 'Transaction failed or was canceled.';
                     setPaymentError(`Payment failed: ${errorMsg}`);
@@ -214,7 +212,6 @@ export default function StartApplicationDialog({ isOpen, onClose, selectedProgra
             }
 
         } catch (error: any) {
-            console.error('Error submitting application:', error);
             alert(`Application Error: ${error.message || 'Please try again.'}`);
             setIsSubmitting(false);
         }

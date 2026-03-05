@@ -211,7 +211,7 @@ const Footer = () => {
 
                 {/* Bottom Bar */}
                 <div className="border-t-2 border-white-800 pt-6 flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-gray-300 font-medium">
-                    <p>© 2026 HEALTHSTUR. All rights reserved.</p>
+                    <p>© {new Date().getFullYear()} HEALTHSTUR. All rights reserved.</p>
                     <div className="flex items-center gap-8">
                         <Link href="/refund" className="hover:text-white  transition-colors">Refund Policy</Link>
                         <Link href="/privacy" className="hover:text-white transition-colors">Privacy Policy</Link>
