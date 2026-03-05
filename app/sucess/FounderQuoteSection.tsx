@@ -1,10 +1,45 @@
 'use client';
 
+import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import { motion } from 'framer-motion';
 import { Quote } from 'lucide-react';
 
+const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000/api';
+
+interface CompanyInfo {
+    founderQuote?: string;
+    founderName?: string;
+    founderDesignation?: string;
+    founderImage?: string;
+}
+
 export default function FounderQuoteSection() {
+    const [founderData, setFounderData] = useState<CompanyInfo | null>(null);
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const res = await fetch(`${API_URL}/company-info`);
+                if (res.ok) {
+                    const data = await res.json();
+                    setFounderData(data);
+                }
+            } catch (error) {
+                console.error('Failed to fetch founder quote:', error);
+            }
+        };
+        fetchData();
+    }, []);
+
+    // Fallbacks
+    const quote = founderData?.founderQuote || "Every transformation reinforces why Healthstur exists to make healthy living practical, sustainable, and empowering.";
+    const name = founderData?.founderName || "Atit Mehta";
+    const designation = founderData?.founderDesignation || "Founder & Chief Healthstur";
+    const image = founderData?.founderImage
+        ? `${API_URL.replace('/api', '')}${founderData.founderImage}`
+        : "/Sucess2.svg";
+
     return (
         <section className="py-8 md:py-18 bg-[#023051]"> {/* Dark blue background */}
             <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-4xl text-center">
@@ -27,7 +62,7 @@ export default function FounderQuoteSection() {
                     transition={{ duration: 0.6, delay: 0.2 }}
                     className="text-2xl md:text-3xl lg:text-4xl font-medium text-white leading-snug mb-8"
                 >
-                    "Every transformation reinforces why Healthstur exists to make healthy living practical, sustainable, and empowering."
+                    "{quote}"
                 </motion.blockquote>
 
                 <motion.div
@@ -37,21 +72,21 @@ export default function FounderQuoteSection() {
                     transition={{ duration: 0.6, delay: 0.4 }}
                     className="flex flex-col items-center"
                 >
-                    <div className="relative w-20 h-20 mb-4 rounded-full overflow-hidden border-2 border-white/20">
-                        {/* Placeholder image, should be Atit Mehta */}
+                    <div className="relative w-20 h-20 mb-4 rounded-full overflow-hidden border-2 border-white/20 bg-white/10">
                         <Image
-                            src="/Sucess2.svg"
-                            alt="Atit Mehta"
+                            src={image}
+                            alt={name}
                             fill
                             className="object-cover"
+                            unoptimized={image.startsWith('http')}
                         />
                     </div>
                     <cite className="not-italic">
                         <div className="text-xl font-bold text-white mb-1">
-                            Atit Mehta
+                            {name}
                         </div>
                         <div className="text-gray-300 font-medium text-sm tracking-wide">
-                            Founder & Chief Healthstur
+                            {designation}
                         </div>
                     </cite>
                 </motion.div>
