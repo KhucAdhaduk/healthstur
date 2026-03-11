@@ -166,6 +166,8 @@ export default function Hero() {
                         sizes="100vw"
                         className="object-cover object-[65%_center] lg:object-center"
                     />
+                    {/* Dark overlay for mobile to improve text readability */}
+                    <div className="absolute inset-0 bg-black/60 lg:hidden" />
                 </motion.div>
             </AnimatePresence>
 
@@ -206,7 +208,7 @@ export default function Hero() {
                                     transition={{ duration: 0.5, ease: [0.25, 0.1, 0.25, 1.0] as const }}
                                 >
                                     {/* Trusted Badge */}
-                                    <div className="inline-flex items-center gap-2 px-2 py-1.5 bg-white/90 backdrop-blur-sm rounded-full border border-white shadow-sm mb-6 sm:mb-8 animate-fade-in-up">
+                                    <div className="inline-flex items-center gap-2 px-2 py-1.5 bg-black/20 lg:bg-white/90 backdrop-blur-sm rounded-full border border-white/20 lg:border-white shadow-sm mb-6 sm:mb-8 animate-fade-in-up">
                                         <div className="flex -space-x-2 pl-1">
                                             {[1, 2, 3].map((i) => (
                                                 <div key={i} className="w-8 h-8 rounded-full border-2 border-white bg-gray-200 overflow-hidden">
@@ -220,23 +222,23 @@ export default function Hero() {
                                                 </div>
                                             ))}
                                         </div>
-                                        <span className="text-[12px] sm:text-[13px] font-bold text-[#023051] px-2 whitespace-nowrap">
+                                        <span className="text-[12px] sm:text-[13px] font-bold text-white lg:text-[#023051] px-2 whitespace-nowrap">
                                             Trusted by 10,000+ Members
                                         </span>
                                     </div>
 
                                     {/* Heading */}
-                                    <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-black text-[#023051] leading-[1.1] mb-6">
+                                    <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-black text-white lg:text-[#023051] leading-[1.1] mb-6 drop-shadow-sm lg:drop-shadow-none">
                                         {displayHeading}
                                     </h1>
 
                                     {/* Subtext */}
-                                    <p className="text-[15px] sm:text-[16px] md:text-[17px] text-[#000000] mb-6 max-w-lg mx-auto lg:mx-0 leading-relaxed font-medium opacity-90">
+                                    <p className="text-[15px] sm:text-[16px] md:text-[17px] text-white/90 lg:text-[#000000] mb-6 max-w-lg mx-auto lg:mx-0 leading-relaxed font-medium opacity-100 lg:opacity-90">
                                         {displaySubtext}
                                     </p>
 
                                     <div className="mb-4 text-center lg:text-left w-full max-w-lg mx-auto lg:mx-0">
-                                        <span className="text-[18px] sm:text-[19px] font-bold text-[#000000]">
+                                        <span className="text-[18px] sm:text-[19px] font-bold text-white lg:text-[#000000]">
                                             Benefits:
                                         </span>
                                     </div>
@@ -248,8 +250,8 @@ export default function Hero() {
                                                 key={item}
                                                 className="flex items-center gap-3 justify-center lg:justify-start"
                                             >
-                                                <div className="w-2 h-2 rounded-full bg-[#023051]" />
-                                                <span className="text-[16px] sm:text-[17px] font-medium text-[#000000]">
+                                                <div className="w-2 h-2 rounded-full bg-white lg:bg-[#023051]" />
+                                                <span className="text-[16px] sm:text-[17px] font-medium text-white lg:text-[#000000]">
                                                     {item}
                                                 </span>
                                             </div>
