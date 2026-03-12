@@ -175,7 +175,7 @@ export default function DynamicSolutions({ heading, subtext, solutions }: Dynami
 
                                     <div className="space-y-3 pt-1">
                                         <div>
-                                            <h4 className="font-bold text-[#0F172A] text-sm md:text-base mb-1">Healthstura's Approach:</h4>
+                                            <h4 className="font-bold text-[#0F172A] text-sm md:text-base mb-1">Healthstur's Approach:</h4>
                                             <p className="text-gray-600 text-sm">{program.approach}</p>
                                         </div>
                                         <div>
