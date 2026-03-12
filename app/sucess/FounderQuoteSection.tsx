@@ -36,9 +36,7 @@ export default function FounderQuoteSection() {
     const quote = founderData?.founderQuote || "Every transformation reinforces why Healthstur exists to make healthy living practical, sustainable, and empowering.";
     const name = founderData?.founderName || "Atit Mehta";
     const designation = founderData?.founderDesignation || "Founder & Chief Healthstur";
-    const image = founderData?.founderImage
-        ? `${API_URL.replace('/api', '')}${founderData.founderImage}`
-        : "/Sucess2.svg";
+    const backendUrl = (process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000/api').replace(/\/api$/, '');
 
     return (
         <section className="py-8 md:py-18 bg-[#023051]"> {/* Dark blue background */}
@@ -72,14 +70,18 @@ export default function FounderQuoteSection() {
                     transition={{ duration: 0.6, delay: 0.4 }}
                     className="flex flex-col items-center"
                 >
-                    <div className="relative w-20 h-20 mb-4 rounded-full overflow-hidden border-2 border-white/20 bg-white/10">
-                        <Image
-                            src={image}
-                            alt={name}
-                            fill
-                            className="object-cover"
-                            unoptimized={image.startsWith('http')}
-                        />
+                    <div className="relative w-20 h-20 mb-4 rounded-full overflow-hidden border-2 border-white/20 bg-white/10 flex items-center justify-center">
+                        {founderData?.founderImage ? (
+                            <Image
+                                src={founderData.founderImage.startsWith('http') ? founderData.founderImage : `${backendUrl}${founderData.founderImage}`}
+                                alt={name}
+                                fill
+                                className="object-cover"
+                                unoptimized
+                            />
+                        ) : (
+                            <span className="text-2xl font-bold text-white">{name.charAt(0)}</span>
+                        )}
                     </div>
                     <cite className="not-italic">
                         <div className="text-xl font-bold text-white mb-1">

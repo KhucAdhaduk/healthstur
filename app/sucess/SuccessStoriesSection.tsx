@@ -108,15 +108,17 @@ export default function SuccessStoriesSection() {
                                     className="bg-white rounded-3xl overflow-hidden shadow-sm hover:shadow-xl transition-shadow duration-300 border border-gray-100 flex flex-col h-full"
                                 >
                                     {/* Image Container */}
-                                    <div className="relative h-64 md:h-72 w-full">
-                                        <Image
-                                            src={story.image?.startsWith('http') ? story.image : `${backendUrl}${story.image}`}
-                                            alt={story.name}
-                                            fill
-                                            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                                            className="object-cover"
-                                            unoptimized
-                                        />
+                                    <div className="relative h-64 md:h-72 w-full bg-gray-200">
+                                        {story.image && (
+                                            <Image
+                                                src={story.image.startsWith('http') ? story.image : `${backendUrl}${story.image}`}
+                                                alt={story.name}
+                                                fill
+                                                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                                                className="object-cover"
+                                                unoptimized
+                                            />
+                                        )}
                                         <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent" />
 
                                         <div className="absolute bottom-4 left-4 text-white">

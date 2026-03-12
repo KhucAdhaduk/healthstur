@@ -81,7 +81,7 @@ export default function PricingSection() {
 
         const cleanPrice = displayPrice.toString().replace(/^[^\d.]+/, '').trim();
 
-        return <><span className="text-4xl md:text-5xl font-extrabold mr-2 transition-colors duration-300 text-[#023051] group-hover:text-white">{symbol}{cleanPrice}</span></>;
+        return <><span className="text-4xl md:text-5xl font-extrabold mr-2 transition-colors duration-300 text-white md:text-[#023051] group-hover:text-white">{symbol}{cleanPrice}</span></>;
     };
 
     const handleBuyClick = (plan: any) => {
@@ -158,10 +158,10 @@ export default function PricingSection() {
                                 initial={{ opacity: 0, y: 20 }}
                                 animate={{ opacity: 1, y: 0 }}
                                 transition={{ duration: 0.3, delay: index * 0.1 }}
-                                className={`group relative overflow-hidden rounded-[32px] p-6 md:p-8 flex flex-col border transition-all duration-300 bg-white text-[#023051] border-gray-300 z-0 hover:text-white hover:border-transparent hover:shadow-xl`}
+                                className={`group relative overflow-hidden rounded-[32px] p-6 md:p-8 flex flex-col border transition-all duration-300 bg-transparent md:bg-white text-white md:text-[#023051] border-transparent md:border-gray-300 z-0 hover:text-white hover:border-transparent hover:shadow-xl`}
                             >
                                 {/* Hover Background Image */}
-                                <div className="absolute inset-0 z-[-1] opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none">
+                                <div className="absolute inset-0 z-[-1] opacity-100 md:opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none">
                                     <div
                                         className="absolute inset-0 bg-cover bg-center"
                                         style={{
@@ -175,42 +175,42 @@ export default function PricingSection() {
 
                                 {/* Most Popular Badge */}
                                 {plan.highlighted && (
-                                    <div className="absolute top-0 right-0 bg-[#023051] text-white px-5 py-2 rounded-bl-xl rounded-tr-[31px] text-xs font-bold uppercase tracking-widest shadow-sm z-20 group-hover:bg-white group-hover:text-[#023051] transition-colors duration-300">
+                                    <div className="absolute top-0 right-0 bg-white md:bg-[#023051] text-[#023051] md:text-white px-5 py-2 rounded-bl-xl rounded-tr-[31px] text-xs font-bold uppercase tracking-widest shadow-sm z-20 group-hover:bg-white group-hover:text-[#023051] transition-colors duration-300">
                                         MOST POPULAR
                                     </div>
                                 )}
 
                                 {/* Icon */}
-                                <div className="w-12 h-12 md:w-14 md:h-14 rounded-2xl flex items-center justify-center mb-6 transition-colors duration-300 bg-[#F0F4F9] text-[#023051] group-hover:bg-white/10 group-hover:text-white">
+                                <div className="w-12 h-12 md:w-14 md:h-14 rounded-2xl flex items-center justify-center mb-6 transition-colors duration-300 bg-white/10 md:bg-[#F0F4F9] text-white md:text-[#023051] group-hover:bg-white/10 group-hover:text-white">
                                     <DynamicIcon name={plan.icon || 'Star'} className="w-6 h-6 md:w-7 md:h-7" strokeWidth={1.5} />
                                 </div>
 
                                 {/* Plan Info */}
-                                <h3 className="text-2xl md:text-3xl font-extrabold mb-2 transition-colors duration-300 text-[#023051] group-hover:text-white">{plan.name}</h3>
-                                <p className="text-sm md:text-base mb-6 leading-relaxed transition-colors duration-300 text-gray-500 group-hover:text-gray-300">
+                                <h3 className="text-2xl md:text-3xl font-extrabold mb-2 transition-colors duration-300 text-white md:text-[#023051] group-hover:text-white">{plan.name}</h3>
+                                <p className="text-sm md:text-base mb-6 leading-relaxed transition-colors duration-300 text-gray-300 md:text-gray-500 group-hover:text-gray-300">
                                     {plan.description}
                                 </p>
 
                                 {/* Price */}
                                 <div className="flex items-baseline mb-6">
                                     {getPriceDisplay(plan)}
-                                    <span className="text-sm font-semibold transition-colors duration-300 text-gray-400 group-hover:text-gray-300">/Monthly</span>
+                                    <span className="text-sm font-semibold transition-colors duration-300 text-gray-300 md:text-gray-400 group-hover:text-gray-300">/Monthly</span>
                                 </div>
 
-                                <hr className="mb-6 transition-colors duration-300 border-gray-200 group-hover:border-white/30" />
+                                <hr className="mb-6 transition-colors duration-300 border-white/30 md:border-gray-200 group-hover:border-white/30" />
 
                                 <div className="flex-grow">
                                     {/* What's Included */}
                                     {plan.features && plan.features.length > 0 && (
                                         <>
-                                            <h4 className="font-bold text-base mb-4 transition-colors duration-300 text-[#023051] group-hover:text-white">What’s Included:</h4>
+                                            <h4 className="font-bold text-base mb-4 transition-colors duration-300 text-white md:text-[#023051] group-hover:text-white">What’s Included:</h4>
                                             <ul className="space-y-3 mb-6">
                                                 {plan.features.map((feature: string, idx: number) => (
                                                     <li key={idx} className="flex items-start gap-3">
-                                                        <div className="rounded-full p-0.5 mt-0.5 shrink-0 transition-colors duration-300 bg-[#023051] text-white group-hover:bg-white group-hover:text-[#023051]">
+                                                        <div className="rounded-full p-0.5 mt-0.5 shrink-0 transition-colors duration-300 bg-white md:bg-[#023051] text-[#023051] md:text-white group-hover:bg-white group-hover:text-[#023051]">
                                                             <Check className="w-3 h-3" strokeWidth={3} />
                                                         </div>
-                                                        <span className="text-sm font-semibold leading-tight transition-colors duration-300 text-[#023051] group-hover:text-white">
+                                                        <span className="text-sm font-semibold leading-tight transition-colors duration-300 text-white md:text-[#023051] group-hover:text-white">
                                                             {feature}
                                                         </span>
                                                     </li>
@@ -222,24 +222,10 @@ export default function PricingSection() {
                                     {/* Support Level */}
                                     {plan.support && plan.support.length > 0 && (
                                         <>
-                                            <h4 className="font-bold text-base mb-4 transition-colors duration-300 text-[#023051] group-hover:text-white">Support Level:</h4>
+                                            <h4 className="font-bold text-base mb-4 transition-colors duration-300 text-white md:text-[#023051] group-hover:text-white">Support Level:</h4>
                                             <ul className="space-y-3 mb-6">
                                                 {plan.support.map((item: string, idx: number) => (
-                                                    <li key={idx} className="text-sm font-medium leading-tight transition-colors duration-300 text-gray-600 group-hover:text-gray-300">
-                                                        {item}
-                                                    </li>
-                                                ))}
-                                            </ul>
-                                        </>
-                                    )}
-
-                                    {/* Positioning */}
-                                    {plan.positioning && plan.positioning.length > 0 && (
-                                        <>
-                                            <h4 className="font-bold text-base mb-4 transition-colors duration-300 text-[#023051] group-hover:text-white">Positioning:</h4>
-                                            <ul className="space-y-3 mb-8">
-                                                {plan.positioning.map((item: string, idx: number) => (
-                                                    <li key={idx} className="text-sm font-medium leading-tight transition-colors duration-300 text-gray-600 group-hover:text-gray-300">
+                                                    <li key={idx} className="text-sm font-medium leading-tight transition-colors duration-300 text-gray-300 md:text-gray-600 group-hover:text-gray-300">
                                                         {item}
                                                     </li>
                                                 ))}
@@ -251,7 +237,7 @@ export default function PricingSection() {
                                 {/* Button */}
                                 <button
                                     onClick={() => handleBuyClick(plan)}
-                                    className="w-full py-4 rounded-xl font-bold cursor-pointer text-sm tracking-wider uppercase transition-all duration-300 mt-auto bg-[#eff5fc] text-[#023051] hover:bg-[#E2E8F0] group-hover:bg-white group-hover:text-[#023051] group-hover:hover:bg-gray-100"
+                                    className="w-full py-4 rounded-xl font-bold cursor-pointer text-sm tracking-wider uppercase transition-all duration-300 mt-auto bg-white md:bg-[#eff5fc] text-[#023051] hover:bg-gray-100 md:hover:bg-[#E2E8F0] group-hover:bg-white group-hover:text-[#023051] group-hover:hover:bg-gray-100"
                                 >
                                     {plan.buttonText}
                                 </button>
