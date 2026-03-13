@@ -111,7 +111,7 @@ export default function SuccessStoriesSection() {
                                     <div className="relative h-64 md:h-72 w-full bg-gray-200">
                                         {story.image && (
                                             <Image
-                                                src={story.image.startsWith('http') ? story.image : `${backendUrl}${story.image}`}
+                                                src={story.image.replace('/uploads/', '/public/').startsWith('http') ? story.image.replace('/uploads/', '/public/') : `${backendUrl}${story.image.replace('/uploads/', '/public/')}`}
                                                 alt={story.name}
                                                 fill
                                                 sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"

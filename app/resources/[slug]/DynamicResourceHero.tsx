@@ -12,8 +12,9 @@ interface DynamicResourceHeroProps {
 
 export default function DynamicResourceHero({ title, description, image, resourceTitle }: DynamicResourceHeroProps) {
     const defaultImage = "/Wellness.jpg";
-    const bgImage = image
-        ? (image.startsWith('http') ? image : `${(process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000/api').replace(/\/api$/, '')}${image}`)
+    const bgPath = image?.replace('/uploads/', '/public/');
+    const bgImage = bgPath
+        ? (bgPath.startsWith('http') ? bgPath : `${(process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000/api').replace(/\/api$/, '')}${bgPath}`)
         : defaultImage;
 
     return (

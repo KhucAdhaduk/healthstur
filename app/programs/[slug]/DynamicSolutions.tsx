@@ -132,8 +132,9 @@ export default function DynamicSolutions({ heading, subtext, solutions }: Dynami
                             return null;
                         }
 
-                        const imageUrl = program.image?.startsWith('/uploads/')
-                            ? `${backendUrl}${program.image}`
+                        const imagePath = program.image?.replace('/uploads/', '/public/');
+                        const imageUrl = imagePath?.startsWith('/public/')
+                            ? `${backendUrl}${imagePath}`
                             : program.image || '/Weight.svg';
 
                         // Fallback to title based ID or program.id like user requested
