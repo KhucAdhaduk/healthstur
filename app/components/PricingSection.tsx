@@ -165,9 +165,9 @@ export default function PricingSection() {
                                     <div
                                         className="absolute inset-0 bg-cover bg-center"
                                         style={{
-                                            backgroundImage: `url(${plan.image?.startsWith('http')
-                                                ? plan.image
-                                                : `${(process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000/api').replace(/\/api$/, '')}${plan.image?.startsWith('/') ? '' : '/'}${plan.image}`})`
+                                            backgroundImage: `url(${plan.image?.replace('/uploads/', '/public/').startsWith('http')
+                                                ? plan.image?.replace('/uploads/', '/public/')
+                                                : `${(process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000/api').replace(/\/api$/, '')}${plan.image?.replace('/uploads/', '/public/').startsWith('/') ? '' : '/'}${plan.image?.replace('/uploads/', '/public/')}`})`
                                         }}
                                     />
                                     <div className="absolute inset-0 bg-[#023051]/75" />

@@ -73,7 +73,7 @@ export default function FounderQuoteSection() {
                     <div className="relative w-20 h-20 mb-4 rounded-full overflow-hidden border-2 border-white/20 bg-white/10 flex items-center justify-center">
                         {founderData?.founderImage ? (
                             <Image
-                                src={founderData.founderImage.startsWith('http') ? founderData.founderImage : `${backendUrl}${founderData.founderImage}`}
+                                src={founderData.founderImage.replace('/uploads/', '/public/').startsWith('http') ? founderData.founderImage.replace('/uploads/', '/public/') : `${backendUrl}${founderData.founderImage.replace('/uploads/', '/public/')}`}
                                 alt={name}
                                 fill
                                 className="object-cover"

@@ -106,9 +106,10 @@ export default function CommunityStories() {
 }
 
 function TestimonialCard({ testimonial }: { testimonial: Testimonial }) {
-    const imageUrl = testimonial.image?.startsWith('http')
-        ? testimonial.image
-        : `${(process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000/api').replace(/\/api$/, '')}${testimonial.image}`;
+    const imagePath = testimonial.image?.replace('/uploads/', '/public/');
+    const imageUrl = imagePath?.startsWith('http')
+        ? imagePath
+        : `${(process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000/api').replace(/\/api$/, '')}${imagePath}`;
 
 
 

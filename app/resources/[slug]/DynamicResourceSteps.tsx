@@ -42,7 +42,7 @@ export default function DynamicResourceSteps({ steps }: DynamicResourceStepsProp
                     {steps.map((step, index) => {
                         const defaultImage = "/Wellness1.svg"; // Fallback
                         const stepImage = step.image
-                            ? (step.image.startsWith('http') ? step.image : `${(process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000/api').replace(/\/api$/, '')}${step.image}`)
+                            ? (step.image.replace('/uploads/', '/public/').startsWith('http') ? step.image.replace('/uploads/', '/public/') : `${(process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000/api').replace(/\/api$/, '')}${step.image.replace('/uploads/', '/public/')}`)
                             : defaultImage;
 
                         // Generate a URL-friendly slug ID identical to the backend search logic
