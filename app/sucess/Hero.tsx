@@ -34,7 +34,7 @@ export default function Hero() {
                         </span>
                     </div>
 
-                    {/* Title */}
+                    {/* title */}
                     <h1 className="text-4xl md:text-5xl font-bold mb-10 tracking-tight">
                         Real Transformations. Real Results.
                     </h1>
