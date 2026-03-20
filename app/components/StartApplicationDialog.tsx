@@ -28,15 +28,15 @@ export default function StartApplicationDialog({ isOpen, onClose, selectedProgra
     });
 
     useEffect(() => {
-        const loadRazorpayScript = () => {
-            if (document.getElementById('razorpay-checkout-js')) return;
+        const loadCashfreeScript = () => {
+            if (document.getElementById('cashfree-checkout-js')) return;
             const script = document.createElement('script');
-            script.id = 'razorpay-checkout-js';
-            script.src = 'https://checkout.razorpay.com/v1/checkout.js';
+            script.id = 'cashfree-checkout-js';
+            script.src = 'https://sdk.cashfree.com/js/v3/cashfree.js';
             script.async = true;
             document.body.appendChild(script);
         };
-        loadRazorpayScript();
+        loadCashfreeScript();
     }, []);
 
     useEffect(() => {
@@ -151,22 +151,34 @@ export default function StartApplicationDialog({ isOpen, onClose, selectedProgra
                 throw new Error(data.message || data.error || 'Failed to submit application');
             }
 
-            if (data.razorpayOrderId) {
+            if (data.paymentSessionId) {
                 // Payment flow
-                const options = {
-                    key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID || 'rzp_test_QGdFrCgX1jtz7u',
-                    name: 'Healthstur',
-                    description: selectedProgram || 'Program Purchase',
-                    order_id: data.razorpayOrderId,
-                    handler: async function (res: any) {
+                const cashfree = await (window as any).Cashfree({
+                    mode: process.env.NEXT_PUBLIC_CASHFREE_MODE || 'production'
+                });
+
+                let checkoutOptions = {
+                    paymentSessionId: data.paymentSessionId,
+                    redirectTarget: "_modal",
+                };
+
+                cashfree.checkout(checkoutOptions).then(async (result: any) => {
+                    if(result.error){
+                        setIsSubmitting(false);
+                        setPaymentError(`Payment failed: ${result.error.message || 'Transaction failed or was canceled.'}`);
+                    }
+                    if(result.redirect){
+                        // This usually happens for UPI intent flows internally, handle if redirecting
+                        console.log("Redirection")
+                    }
+                    if(result.paymentDetails){
+                        // On successful payment modal close, verify payment
                         try {
                             const verifyRes = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000/api'}/applications/verify-payment`, {
                                 method: 'POST',
                                 headers: { 'Content-Type': 'application/json' },
                                 body: JSON.stringify({
-                                    razorpay_order_id: res.razorpay_order_id,
-                                    razorpay_payment_id: res.razorpay_payment_id,
-                                    razorpay_signature: res.razorpay_signature,
+                                    order_id: data.cashfreeOrderId,
                                     applicationData: payload
                                 })
                             });
@@ -182,29 +194,8 @@ export default function StartApplicationDialog({ isOpen, onClose, selectedProgra
                         } catch (err) {
                             alert('An error occurred during payment verification.');
                         }
-                    },
-                    prefill: {
-                        name: formData.fullName,
-                        email: formData.email,
-                        contact: formData.mobileNumber
-                    },
-                    theme: {
-                        color: '#023051'
-                    },
-                    modal: {
-                        ondismiss: function () {
-                            setIsSubmitting(false);
-                        }
                     }
-                };
-
-                const rzp = new (window as any).Razorpay(options);
-                rzp.on('payment.failed', function (res: any) {
-                    setIsSubmitting(false);
-                    const errorMsg = res?.error?.description || res?.error?.reason || res?.description || 'Transaction failed or was canceled.';
-                    setPaymentError(`Payment failed: ${errorMsg}`);
                 });
-                rzp.open();
 
             } else {
 
@@ -257,11 +248,11 @@ export default function StartApplicationDialog({ isOpen, onClose, selectedProgra
                                     </div>
                                     <div className="flex justify-between items-center border-b border-gray-200 pb-3">
                                         <span className="text-gray-500 font-medium">Order ID</span>
-                                        <span className="text-[#023051] font-bold text-sm">{paymentSuccessData.razorpayOrderId || 'N/A'}</span>
+                                        <span className="text-[#023051] font-bold text-sm">{paymentSuccessData.cashfreeOrderId || 'N/A'}</span>
                                     </div>
                                     <div className="flex justify-between items-center">
                                         <span className="text-gray-500 font-medium">Payment ID</span>
-                                        <span className="text-[#023051] font-bold text-sm">{paymentSuccessData.razorpayPaymentId || 'N/A'}</span>
+                                        <span className="text-[#023051] font-bold text-sm">{paymentSuccessData.cashfreePaymentId || 'N/A'}</span>
                                     </div>
                                 </div>
 
