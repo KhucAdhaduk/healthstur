@@ -4,7 +4,7 @@ import Image from 'next/image';
 import { Target, ArrowUpRight, Heart, User, Sun, Activity, Leaf, Flower } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { DynamicIcon } from './DynamicIcon';
-
+import { getImageUrl } from '../utils/image.util';
 import { useState, useEffect } from 'react';
 
 export interface CuratedTrack {
@@ -24,7 +24,6 @@ export interface CuratedTrack {
 }
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000/api';
-const ASSET_URL = API_URL.replace(/\/api$/, '');
 
 const containerVariants = {
     hidden: { opacity: 0 },
@@ -102,7 +101,7 @@ export default function CuratedTracks() {
                         >
                             {/* Background Image */}
                             <Image
-                                src={card.curatedImage?.startsWith('http') ? card.curatedImage : `${ASSET_URL}${card.curatedImage || ''}`}
+                                src={getImageUrl(card.curatedImage)}
                                 alt={card.curatedTitle || 'Curated Track'}
                                 fill
                                 unoptimized

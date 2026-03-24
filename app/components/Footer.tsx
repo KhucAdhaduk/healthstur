@@ -8,6 +8,7 @@ import { useEffect, useState } from 'react';
 
 import { motion } from 'framer-motion';
 import ConsultationDialog from './ConsultationDialog';
+import { getImageUrl } from '../utils/image.util';
 
 const Footer = () => {
     const [isConsultationOpen, setIsConsultationOpen] = useState(false);
@@ -68,7 +69,7 @@ const Footer = () => {
                         {/* Logo */}
                         <Link href="/" className="flex items-center gap-3">
                             <div className="bg-white p-1.5 rounded-xl">
-                                <Image src="/Logo.svg" alt="Healthstur Logo" width={40} height={40} className="object-contain" />
+                                <Image src={getImageUrl('Logo.svg')} alt="Healthstur Logo" width={40} height={40} className="object-contain" />
                             </div>
                             <span className="text-2xl font-black tracking-tight uppercase">HEALTHSTUR</span>
                         </Link>

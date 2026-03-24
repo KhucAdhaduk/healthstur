@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { Star } from 'lucide-react';
 import Image from 'next/image';
 import { motion } from 'framer-motion';
+import { getImageUrl } from '../utils/image.util';
 
 interface Testimonial {
     id: string;
@@ -106,10 +107,7 @@ export default function CommunityStories() {
 }
 
 function TestimonialCard({ testimonial }: { testimonial: Testimonial }) {
-    const imagePath = testimonial.image?.replace('/uploads/', '/public/');
-    const imageUrl = imagePath?.startsWith('http')
-        ? imagePath
-        : `${(process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000/api').replace(/\/api$/, '')}${imagePath}`;
+    const imageUrl = getImageUrl(testimonial.image);
 
 
 

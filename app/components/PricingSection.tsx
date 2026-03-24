@@ -5,6 +5,7 @@ import { motion } from 'framer-motion';
 import { Check, Star } from 'lucide-react';
 import { DynamicIcon } from './DynamicIcon';
 import StartApplicationDialog from './StartApplicationDialog';
+import { getImageUrl } from '../utils/image.util';
 
 export default function PricingSection() {
     const [durations, setDurations] = useState<any[]>([]);
@@ -165,9 +166,7 @@ export default function PricingSection() {
                                     <div
                                         className="absolute inset-0 bg-cover bg-center"
                                         style={{
-                                            backgroundImage: `url(${plan.image?.replace('/uploads/', '/public/').startsWith('http')
-                                                ? plan.image?.replace('/uploads/', '/public/')
-                                                : `${(process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000/api').replace(/\/api$/, '')}${plan.image?.replace('/uploads/', '/public/').startsWith('/') ? '' : '/'}${plan.image?.replace('/uploads/', '/public/')}`})`
+                                            backgroundImage: `url(${getImageUrl(plan.image)})`
                                         }}
                                     />
                                     <div className="absolute inset-0 bg-[#023051]/75" />
