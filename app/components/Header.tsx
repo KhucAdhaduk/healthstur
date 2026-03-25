@@ -10,6 +10,7 @@ import ConsultationDialog from './ConsultationDialog';
 import SearchDialog from './SearchDialog';
 import * as LucideIcons from 'lucide-react';
 import { DynamicIcon } from './DynamicIcon';
+import { getImageUrl } from '../utils/image.util';
 
 interface SubItem {
     name: string;
@@ -109,7 +110,7 @@ const Header = () => {
                     <Link href="/" className="flex items-center gap-3">
                         <div className="flex items-center justify-center overflow-hidden">
                             <Image
-                                src="/Logo.svg"
+                                src={getImageUrl('Logo.svg')}
                                 alt="Healthstur Logo"
                                 width={55}
                                 height={60}

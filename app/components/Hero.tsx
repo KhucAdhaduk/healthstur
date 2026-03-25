@@ -5,6 +5,7 @@ import Image from 'next/image';
 import { useState, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Link from 'next/link';
+import { getImageUrl } from '../utils/image.util';
 
 interface Program {
     id: string;
@@ -99,13 +100,8 @@ export default function Hero() {
     }
 
 
-    const backendUrl = (process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000/api').replace(/\/api$/, '');
-
     const bgToUse = slide.homeBackground || slide.background;
-    const bgPath = bgToUse?.replace('/uploads/', '/public/');
-    const backgroundUrl = bgPath?.startsWith('/public/')
-        ? `${backendUrl}${bgPath}`
-        : bgToUse || '/Program_bg.png';
+    const backgroundUrl = getImageUrl(bgToUse) || '/Program_bg.png';
 
     const displayHeading = slide.homeHeading || slide.heading;
     const displaySubtext = slide.homeSubtext || slide.subtext;

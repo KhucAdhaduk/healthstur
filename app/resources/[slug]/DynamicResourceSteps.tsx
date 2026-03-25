@@ -3,6 +3,7 @@
 import { useEffect } from 'react';
 import Image from 'next/image';
 import { motion } from 'framer-motion';
+import { getImageUrl } from '../../utils/image.util';
 
 interface Step {
     id: number;
@@ -41,9 +42,7 @@ export default function DynamicResourceSteps({ steps }: DynamicResourceStepsProp
                 <div className="space-y-12 md:space-y-18">
                     {steps.map((step, index) => {
                         const defaultImage = "/Wellness1.svg"; // Fallback
-                        const stepImage = step.image
-                            ? (step.image.replace('/uploads/', '/public/').startsWith('http') ? step.image.replace('/uploads/', '/public/') : `${(process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000/api').replace(/\/api$/, '')}${step.image.replace('/uploads/', '/public/')}`)
-                            : defaultImage;
+                        const stepImage = step.image ? getImageUrl(step.image) : defaultImage;
 
                         // Generate a URL-friendly slug ID identical to the backend search logic
                         const stepSlugId = (step.title || `step-${index + 1}`).toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)+/g, '');
