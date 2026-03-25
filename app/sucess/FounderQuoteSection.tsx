@@ -73,8 +73,8 @@ export default function FounderQuoteSection() {
                     <div className="relative w-20 h-20 mb-4 rounded-full overflow-hidden border-2 border-white/20 bg-white/10 flex items-center justify-center">
                         {founderData?.founderImage ? (
                             <Image
-                                src={founderData.founderImage.startsWith('http') 
-                                    ? founderData.founderImage 
+                                src={founderData.founderImage.startsWith('http')
+                                    ? founderData.founderImage
                                     : `${backendUrl}${founderData.founderImage}`}
                                 alt={name}
                                 fill
@@ -87,6 +87,7 @@ export default function FounderQuoteSection() {
                     </div>
                     <cite className="not-italic">
                         <div className="text-xl font-bold text-white mb-1">
+
                             {name}
                         </div>
                         <div className="text-gray-300 font-medium text-sm tracking-wide">
