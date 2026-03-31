@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import ResourceContent from "./ResourceContent";
+import { getImageUrl } from "../../utils/image.util";
 
 type Props = {
     params: Promise<{ slug: string }>;
@@ -12,13 +13,14 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
         if (res.ok) {
             const resource = await res.json();
             if (resource) {
+                const imageUrl = getImageUrl(resource.heroImage);
                 return {
                     title: `${resource.title} | Wellness Resources`,
                     description: resource.heroDescription,
                     openGraph: {
                         title: `${resource.title} | Wellness Resources | Healthstur`,
                         description: resource.heroDescription,
-                        images: resource.heroImage ? [{ url: (process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000/api').replace(/\/api$/, '') + resource.heroImage.replace('/uploads/', '/public/') }] : [],
+                        images: imageUrl ? [{ url: imageUrl }] : [],
                     }
                 };
             }

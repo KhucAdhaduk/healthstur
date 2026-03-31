@@ -2,6 +2,7 @@
 
 import Image from 'next/image';
 import { motion } from 'framer-motion';
+import { getImageUrl } from '../../utils/image.util';
 
 interface HeroProps {
     heading: string;
@@ -11,11 +12,7 @@ interface HeroProps {
 }
 
 export default function DynamicHero({ heading, subtext, background, programName }: HeroProps) {
-    const backendUrl = (process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000/api').replace(/\/api$/, '');
-    const bgPath = background?.replace('/uploads/', '/public/');
-    const backgroundUrl = bgPath?.startsWith('/public/')
-        ? `${backendUrl}${bgPath}`
-        : background || '/Program_bg.png';
+    const backgroundUrl = getImageUrl(background) || '/Program_bg.png';
 
 
 
