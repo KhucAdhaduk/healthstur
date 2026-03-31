@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import ProgramContent from "./ProgramContent";
+import { getImageUrl } from "../../utils/image.util";
 
 type Props = {
     params: Promise<{ slug: string }>;
@@ -13,13 +14,14 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
             const data = await res.json();
             const program = data.find((p: any) => p.href === `/programs/${slug}`);
             if (program) {
+                const imageUrl = getImageUrl(program.background);
                 return {
                     title: program.name,
                     description: program.subtext,
                     openGraph: {
                         title: `${program.name} | Healthstur`,
                         description: program.subtext,
-                        images: program.background ? [{ url: (process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000/api').replace(/\/api$/, '') + program.background.replace('/uploads/', '/public/') }] : [],
+                        images: imageUrl ? [{ url: imageUrl }] : [],
                     }
                 };
             }

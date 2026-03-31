@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import { motion } from 'framer-motion';
 import { Quote } from 'lucide-react';
+import { getImageUrl } from '../utils/image.util';
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000/api';
 
@@ -36,7 +37,6 @@ export default function FounderQuoteSection() {
     const quote = founderData?.founderQuote || "Every transformation reinforces why Healthstur exists to make healthy living practical, sustainable, and empowering.";
     const name = founderData?.founderName || "Atit Mehta";
     const designation = founderData?.founderDesignation || "Founder & Chief Healthstur";
-    const backendUrl = (process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000/api').replace(/\/api$/, '');
 
     return (
         <section className="py-8 md:py-18 bg-[#023051]"> {/* Dark blue background */}
@@ -73,9 +73,7 @@ export default function FounderQuoteSection() {
                     <div className="relative w-20 h-20 mb-4 rounded-full overflow-hidden border-2 border-white/20 bg-white/10 flex items-center justify-center">
                         {founderData?.founderImage ? (
                             <Image
-                                src={founderData.founderImage.startsWith('http')
-                                    ? founderData.founderImage
-                                    : `${backendUrl}${founderData.founderImage}`}
+                                src={getImageUrl(founderData.founderImage) || ''}
                                 alt={name}
                                 fill
                                 className="object-cover"

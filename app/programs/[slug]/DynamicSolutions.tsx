@@ -4,6 +4,7 @@ import Image from 'next/image';
 import { motion } from 'framer-motion';
 import { useState, useEffect } from 'react';
 import StartApplicationDialog from '@/app/components/StartApplicationDialog';
+import { getImageUrl } from '../../utils/image.util';
 
 interface Solution {
     id: string;
@@ -110,8 +111,6 @@ export default function DynamicSolutions({ heading, subtext, solutions }: Dynami
         return `${country.currencySymbol}${cleanPrice}`;
     };
 
-    const backendUrl = (process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000/api').replace(/\/api$/, '');
-
     return (
         <section id="program-solutions" className="pt-12 md:pt-20 pb-4 md:pb-4 bg-white mb-12">
             <div className="container mx-auto px-4 md:px-8 max-w-7xl">
@@ -132,10 +131,7 @@ export default function DynamicSolutions({ heading, subtext, solutions }: Dynami
                             return null;
                         }
 
-                        const imagePath = program.image?.replace('/uploads/', '/public/');
-                        const imageUrl = imagePath?.startsWith('/public/')
-                            ? `${backendUrl}${imagePath}`
-                            : program.image || '/Weight.svg';
+                        const imageUrl = getImageUrl(program.image) || '/Weight.svg';
 
                         // Fallback to title based ID or program.id like user requested
                         const programId = program.title?.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)+/g, '') || index.toString();

@@ -2,6 +2,7 @@
 
 import Image from 'next/image';
 import { motion } from 'framer-motion';
+import { getImageUrl } from '../../utils/image.util';
 
 interface DynamicResourceHeroProps {
     title: string;
@@ -12,10 +13,7 @@ interface DynamicResourceHeroProps {
 
 export default function DynamicResourceHero({ title, description, image, resourceTitle }: DynamicResourceHeroProps) {
     const defaultImage = "/Wellness.jpg";
-    const bgPath = image?.replace('/uploads/', '/public/');
-    const bgImage = bgPath
-        ? (bgPath.startsWith('http') ? bgPath : `${(process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000/api').replace(/\/api$/, '')}${bgPath}`)
-        : defaultImage;
+    const bgImage = getImageUrl(image) || defaultImage;
 
     return (
         <section className="relative w-full min-w-full h-[70vh] min-h-full flex items-center justify-center overflow-hidden">

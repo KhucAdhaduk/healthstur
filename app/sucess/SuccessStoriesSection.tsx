@@ -4,6 +4,7 @@ import Image from 'next/image';
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { CheckCircle2 } from 'lucide-react';
+import { getImageUrl } from '../utils/image.util';
 
 export default function SuccessStoriesSection() {
     const [selectedCategory, setSelectedCategory] = useState("All");
@@ -38,9 +39,7 @@ export default function SuccessStoriesSection() {
 
     const filteredStories = selectedCategory === "All"
         ? stories
-        : stories.filter(story => story.category?.name === selectedCategory);
-
-    const backendUrl = (process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000/api').replace(/\/api$/, '');
+        : stories.filter((story: any) => story.category?.name === selectedCategory);
 
     return (
         <section className="pb-16 md:pb-24 pt-10 md:pt-18 bg-white">
@@ -111,7 +110,7 @@ export default function SuccessStoriesSection() {
                                     <div className="relative h-64 md:h-72 w-full bg-gray-200">
                                         {story.image && (
                                             <Image
-                                                src={story.image.replace('/uploads/', '/public/').startsWith('http') ? story.image.replace('/uploads/', '/public/') : `${backendUrl}${story.image.replace('/uploads/', '/public/')}`}
+                                                src={getImageUrl(story.image) || ''}
                                                 alt={story.name}
                                                 fill
                                                 sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
