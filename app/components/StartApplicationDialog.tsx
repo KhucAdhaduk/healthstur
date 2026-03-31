@@ -234,7 +234,7 @@ export default function StartApplicationDialog({ isOpen, onClose, selectedProgra
                                 </div>
                                 <h2 className="text-3xl font-bold text-[#023051] mb-2">Payment Successful!</h2>
                                 <p className="text-gray-500 mb-8 max-w-md">
-                                    Thank you for your purchase. We have received your application successfully.
+                                    Thank you for your purchase. We have successfully received your application. A copy of your payment invoice has also been sent to your email!
                                 </p>
 
                                 <div className="w-full max-w-md bg-gray-50 rounded-2xl p-6 mb-8 text-left space-y-4">
